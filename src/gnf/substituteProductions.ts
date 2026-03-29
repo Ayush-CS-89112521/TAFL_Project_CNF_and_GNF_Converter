@@ -39,11 +39,20 @@ export function substituteProductions(
         const j = ordering.indexOf(first.value);
 
         if (first.type === 'non-terminal' && j >= 0 && j < i) {
-          // Substitute: find all productions of Aⱼ and replace
+          // Substitute: find all productions of Aⱼ and replace.
+          // IMPORTANT: Only substitute NON-left-recursive productions of Aⱼ
+          // (those whose first symbol is NOT Aⱼ itself). Left-recursive
+          // productions of Aⱼ are eliminated in Step 3. Substituting them
+          // here copies the left-recursive form into Aᵢ, creating indirect
+          // left recursion that causes infinite body growth.
           const Aj = first.value;
-          const ajProductions = productions.filter(r => r.head === Aj);
+          const ajProductions = productions.filter(
+            r => r.head === Aj && !( !r.isEpsilon && r.body.length > 0 && r.body[0].value === Aj )
+          );
 
           if (ajProductions.length === 0) {
+            // Aⱼ only has left-recursive productions right now; skip —
+            // substituteProductions will re-run when Step 3 removes them.
             nextProductions.push(rule);
             continue;
           }
@@ -58,6 +67,9 @@ export function substituteProductions(
             } else {
               newBody = [...ajRule.body, ...rest];
             }
+
+            // Guard: prevent body explosion before it can start.
+            if (newBody.length > 50) continue;
 
             const newRule = makeRule(Ai, newBody, newBody.length === 0);
             nextProductions.push(newRule);

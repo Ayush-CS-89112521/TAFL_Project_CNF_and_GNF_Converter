@@ -8,16 +8,23 @@
 import { makeRule, cloneGrammar, ruleToString } from '../grammar/types';
 import type { Grammar, Rule, Diff, GrammarSymbol } from '../grammar/types';
 
+// Guard 1: Maximum allowed body length before we declare a substitution explosion.
+const MAX_BODY_LEN = 50;
+
 export function backSubstitute(grammar: Grammar): { grammar: Grammar; diffs: Diff[] } {
   const diffs: Diff[] = [];
 
   let productions = [...grammar.productions];
 
-  // Repeat until all rules start with a terminal
+  // Guard 2: Visited set — skip any production key we have already generated
+  // to prevent the same substitution from firing on its own output.
+  const visitedKeys = new Set<string>();
+  for (const r of productions) visitedKeys.add(ruleToString(r));
+
   let changed = true;
   let globalIter = 0;
 
-  while (changed && globalIter < 200) {
+  while (changed && globalIter < 50) {
     changed = false;
     globalIter++;
     const nextProductions: Rule[] = [];
@@ -30,30 +37,43 @@ export function backSubstitute(grammar: Grammar): { grammar: Grammar; diffs: Dif
 
       const first = rule.body[0];
 
-      // If first symbol is a terminal — already in GNF form
+      // Already in GNF form — keep.
       if (first.type === 'terminal') {
         nextProductions.push(rule);
         continue;
       }
 
-      // First symbol is non-terminal: substitute it
+      // First symbol is non-terminal: substitute it.
       const ntVar = first.value;
       const ntProductions = productions.filter(r => r.head === ntVar && !r.isEpsilon);
 
       if (ntProductions.length === 0) {
-        // Can't substitute, keep as is
         nextProductions.push(rule);
         continue;
       }
 
       const rest = rule.body.slice(1);
       changed = true;
-
       diffs.push({ type: 'remove', rule, reason: `Back-substituting: first symbol ${ntVar} replaced` });
 
       for (const ntRule of ntProductions) {
         const newBody: GrammarSymbol[] = [...ntRule.body, ...rest];
+
+        // Guard 1: Explosion check.
+        if (newBody.length > MAX_BODY_LEN) {
+          throw new Error(
+            `GNF back-substitution explosion: rule ${rule.head} → … grew to ${newBody.length} symbols. ` +
+            `Check for indirect left recursion not eliminated in Step 3.`
+          );
+        }
+
         const newRule = makeRule(rule.head, newBody);
+        const key = ruleToString(newRule);
+
+        // Guard 2: Skip if this exact rule was already present or generated.
+        if (visitedKeys.has(key)) continue;
+        visitedKeys.add(key);
+
         nextProductions.push(newRule);
         diffs.push({
           type: 'add',
@@ -63,7 +83,7 @@ export function backSubstitute(grammar: Grammar): { grammar: Grammar; diffs: Dif
       }
     }
 
-    // Deduplicate
+    // Deduplicate.
     const seen = new Set<string>();
     productions = [];
     for (const r of nextProductions) {
@@ -75,7 +95,7 @@ export function backSubstitute(grammar: Grammar): { grammar: Grammar; diffs: Dif
     }
   }
 
-  // Mark all remaining rules
+  // Mark all surviving rules.
   const inDiffs = new Set(diffs.map(d => d.rule.id));
   for (const rule of productions) {
     if (!inDiffs.has(rule.id)) {
