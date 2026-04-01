@@ -96,7 +96,7 @@ export function Home() {
           <div className="bento-grid">
             {/* Grammar Input */}
             <ScrollReveal delay={0.1}>
-              <div className="bento-item bento-span-2">
+              <div className="bento-item">
                 <div className="bento-label">01 / INPUT</div>
                 <h3>Grammar Input</h3>
                 <p>Direct ingestion of CFGs, EBNF, and custom grammar formats with real-time linting.</p>
@@ -135,7 +135,7 @@ export function Home() {
 
             {/* Final Output */}
             <ScrollReveal delay={0.25}>
-              <div className="bento-item bento-span-2">
+              <div className="bento-item">
                 <div className="bento-label">04 / EXPORT</div>
                 <h3>Final Normalized Output</h3>
                 <p>Production-ready grammars optimized for LLVM or custom parser generators.</p>
