@@ -22,18 +22,15 @@ import { STEP_LABELS, type Grammar, type Rule } from './grammar/types';
 import { grammarToString } from './lib/grammarToString';
 import { downloadGrammarPdf, downloadComparisonPdf } from './lib/exportToPdf';
 import './App.css';
-
 interface NavItem {
   id: AppScreen;
   label: string;
   icon: ComponentType<{ size?: number; className?: string }>;
 }
-
 interface NavSection {
   label: string;
   items: NavItem[];
 }
-
 const navSections: NavSection[] = [
   {
     label: 'Workspace',
@@ -64,7 +61,6 @@ const navSections: NavSection[] = [
     ]
   },
 ];
-
 function App() {
   const {
     inputText,
@@ -95,9 +91,7 @@ function App() {
     sidebarCollapsed,
     toggleSidebar,
   } = useGrammarStore();
-
   const didInitRef = useRef(false);
-
   const safeCNFIndex = Math.max(0, Math.min(activeStepIndex, Math.max(cnfSteps.length - 1, 0)));
   const safeGNFIndex = Math.max(0, Math.min(activeStepIndex, Math.max(gnfSteps.length - 1, 0)));
   const currentStep = activeMode === 'gnf' ? gnfSteps[safeGNFIndex] : cnfSteps[safeCNFIndex];
@@ -105,24 +99,18 @@ function App() {
     activeMode === 'gnf'
       ? (gnfSteps[safeGNFIndex]?.after || gnfSteps[gnfSteps.length - 1]?.after || grammar)
       : (cnfSteps[safeCNFIndex]?.after || cnfSteps[cnfSteps.length - 1]?.after || grammar);
-
   const cnfFinal = cnfSteps[cnfSteps.length - 1]?.after || null;
   const gnfFinal = gnfSteps[gnfSteps.length - 1]?.after || null;
-
   const selectedHistory = useMemo(
     () => history.find(item => item.id === selectedHistoryId) || null,
     [history, selectedHistoryId],
   );
-
-  // Initialize from URL params if present
   useEffect(() => {
     if (didInitRef.current) {
       return;
     }
-
     const params = new URLSearchParams(window.location.search);
     const grammarParam = params.get('grammar');
-
     if (grammarParam) {
       try {
         const decoded = atob(grammarParam);
@@ -135,38 +123,30 @@ function App() {
       didInitRef.current = true;
       return;
     }
-
     const { grammar: parsedGrammar, errors } = parseGrammar(inputText);
     setGrammar(parsedGrammar, errors);
     didInitRef.current = true;
-
-    // Set default to workspace since /home is now a separate route
     if (!screen || screen === 'home') {
       setScreen('workspace');
     }
   }, [inputText, setInputText, setGrammar, screen, setScreen]);
-
   const handleInputChange = (value: string) => {
     setInputText(value);
     const { grammar: parsedGrammar, errors } = parseGrammar(value);
     setGrammar(parsedGrammar, errors);
   };
-
   const freshVariableCount = (g: Grammar | null): number => {
     if (!g) return 0;
     return Array.from(g.nonTerminals).filter(nt => /^([TXZ]_?\w*|[TXZ]\d+)/.test(nt)).length;
   };
-
   const setCnfStep = (idx: number) => {
     setActiveMode('cnf');
     setActiveStepIndex(idx);
   };
-
   const setGnfStep = (idx: number) => {
     setActiveMode('gnf');
     setActiveStepIndex(idx);
   };
-
   const renderNavItem = (item: NavItem) => {
     const Icon = item.icon;
     const active = screen === item.id;
@@ -181,7 +161,6 @@ function App() {
       </button>
     );
   };
-
   const renderGrammarRow = (rule: Rule, idx: number, withState = false) => {
     const stateType = withState
       ? rule.isEpsilon
@@ -190,7 +169,6 @@ function App() {
           ? 'added'
           : 'kept'
       : null;
-
     return (
       <div key={rule.id} className={`matrix-row ${stateType ? `state-${stateType}` : ''}`}>
         <span className="row-index">{String(idx + 1).padStart(2, '0')}</span>
@@ -220,7 +198,6 @@ function App() {
       </div>
     );
   };
-
   const renderScreen = () => {
     if (screen === 'workspace') {
       return (
@@ -251,7 +228,6 @@ function App() {
                 </button>
               </div>
             </div>
-
             <div className="panel">
               <p className="eyebrow">Process Monitor</p>
               <h2 className="section-title">Transformation Steps</h2>
@@ -268,7 +244,6 @@ function App() {
                       </button>
                     ))}
                   </div>
-
                   <div className="matrix-card">
                     <div className="matrix-head">
                       <span>Variable</span>
@@ -302,20 +277,16 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'steps') {
-      // CNF Step Analysis - show ONLY CNF steps
       const step = currentStep;
       const steps = cnfSteps; // Force CNF steps only
       if (!step || steps.length === 0) {
         return <div className="empty-card">Run CNF conversion to see transformation steps.</div>;
       }
-
       const beforeCount = step.before.productions.length;
       const afterCount = step.after.productions.length;
       const removed = step.changes.filter(c => c.type === 'remove');
       const added = step.changes.filter(c => c.type === 'add');
-
       return (
         <section className="screen-steps">
           <div className="stage-line">
@@ -330,12 +301,10 @@ function App() {
               </button>
             ))}
           </div>
-
           <div className="steps-grid">
             <div className="hero-column">
               <h1 className="hero-title">{STEP_LABELS[step.name].long}</h1>
               <p className="hero-desc">{step.description}</p>
-
               <div className="metrics-pair">
                 <div>
                   <p className="eyebrow">Before</p>
@@ -346,7 +315,6 @@ function App() {
                   <strong className="sym-nt">{String(afterCount).padStart(2, '0')}</strong>
                 </div>
               </div>
-
               <div className="panel-actions">
                 <button
                   className="btn-secondary"
@@ -366,7 +334,6 @@ function App() {
                 </button>
               </div>
             </div>
-
             <div className="matrix-card large">
               <div className="matrix-head">
                 <span>Formal Transformation Matrix</span>
@@ -380,7 +347,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'table') {
       if (!displayedGrammar) {
         return <div className="empty-card">No grammar loaded.</div>;
@@ -403,7 +369,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'graph') {
       return (
         <section className="screen-graph">
@@ -415,7 +380,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'cnf-final') {
       if (!grammar || !cnfFinal) {
         return <div className="empty-card">Run CNF conversion to view final comparison.</div>;
@@ -424,7 +388,6 @@ function App() {
         <section className="screen-final">
           <h1 className="hero-title">Transformation Complete.</h1>
           <p className="hero-desc">The Context-Free Grammar has been reduced to Chomsky Normal Form.</p>
-
           <div className="summary-row">
             <div className="metric-card">
               <p className="eyebrow">Total Rules</p>
@@ -439,7 +402,6 @@ function App() {
               <strong className="sym-t">CNF Stable</strong>
             </div>
           </div>
-
           <div className="compare-grid">
             <div className="matrix-card large">
               <div className="matrix-head"><span>Original Grammar (CFG)</span></div>
@@ -453,20 +415,16 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'gnf-steps') {
-      // GNF Step Analysis - show ALL GNF steps
       const step = currentStep;
       const steps = gnfSteps; // Force GNF steps only
       if (!step || steps.length === 0) {
         return <div className="empty-card">Run GNF conversion to see transformation steps.</div>;
       }
-
       const beforeCount = step.before.productions.length;
       const afterCount = step.after.productions.length;
       const removed = step.changes.filter(c => c.type === 'remove');
       const added = step.changes.filter(c => c.type === 'add');
-
       return (
         <section className="screen-steps">
           <div className="stage-line">
@@ -481,12 +439,10 @@ function App() {
               </button>
             ))}
           </div>
-
           <div className="steps-grid">
             <div className="hero-column">
               <h1 className="hero-title">{STEP_LABELS[step.name].long}</h1>
               <p className="hero-desc">{step.description}</p>
-
               <div className="metrics-pair">
                 <div>
                   <p className="eyebrow">Before</p>
@@ -497,7 +453,6 @@ function App() {
                   <strong className="sym-nt">{String(afterCount).padStart(2, '0')}</strong>
                 </div>
               </div>
-
               <div className="panel-actions">
                 <button
                   className="btn-secondary"
@@ -517,7 +472,6 @@ function App() {
                 </button>
               </div>
             </div>
-
             <div className="matrix-card large">
               <div className="matrix-head">
                 <span>Formal Transformation Matrix</span>
@@ -531,7 +485,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'gnf-compare') {
       if (!grammar || !gnfFinal) {
         return <div className="empty-card">Run full GNF conversion to compare outputs.</div>;
@@ -567,7 +520,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'gnf-graph') {
       if (!gnfDone || !gnfFinal) {
         return <div className="empty-card">Run GNF conversion to visualize the final grammar graph.</div>;
@@ -582,17 +534,14 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'exports') {
       const cnfFinal = cnfSteps.length > 0 ? cnfSteps[cnfSteps.length - 1]?.after : null;
       const gnfFinal = gnfSteps.length > 0 ? gnfSteps[gnfSteps.length - 1]?.after : null;
-
       return (
         <section className="screen-exports">
           <div className="panel">
             <h1 className="hero-title">Export Center</h1>
             <p className="hero-desc">Download grammar transformations in multiple formats for documentation and sharing.</p>
-
             <div className="export-grid">
               {grammar && (
                 <div className="export-card cfg-card">
@@ -651,7 +600,6 @@ function App() {
                   </div>
                 </div>
               )}
-
               {cnfFinal && (
                 <div className="export-card cnf-card">
                   <div className="export-card-header">
@@ -720,7 +668,6 @@ function App() {
                   </div>
                 </div>
               )}
-
               {gnfFinal && (
                 <div className="export-card gnf-card">
                   <div className="export-card-header">
@@ -794,7 +741,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'history') {
       return (
         <section className="screen-history">
@@ -811,7 +757,6 @@ function App() {
                 </button>
               </div>
             </div>
-
             <div className="matrix-card">
               <div className="matrix-head">
                 <span>Timestamp</span>
@@ -845,7 +790,6 @@ function App() {
         </section>
       );
     }
-
     if (screen === 'history-detail') {
       if (!selectedHistory) {
         return <div className="empty-card">No history snapshot selected.</div>;
@@ -859,7 +803,6 @@ function App() {
               Back to Archive
             </button>
           </div>
-
           <div className="summary-row">
             <div className="metric-card">
               <p className="eyebrow">Created</p>
@@ -874,7 +817,6 @@ function App() {
               <strong>{selectedHistory.hasGNF ? selectedHistory.productionCountAfterGNF : 'N/A'}</strong>
             </div>
           </div>
-
           <div className="compare-grid">
             <div className="matrix-card large">
               <div className="matrix-head"><span>Input Grammar</span></div>
@@ -885,7 +827,6 @@ function App() {
               <pre className="grammar-pre">{selectedHistory.cnfText}</pre>
             </div>
           </div>
-
           {selectedHistory.hasGNF && (
             <div className="matrix-card large mt-4">
               <div className="matrix-head"><span>GNF Output</span></div>
@@ -895,10 +836,8 @@ function App() {
         </section>
       );
     }
-
     return <div className="empty-card">Select a screen from the left navigation.</div>;
   };
-
   return (
     <div className="app-root">
       <header className="topbar">
@@ -907,13 +846,12 @@ function App() {
           <span className="brand-sub">Formal Grammar System</span>
         </div>
         <nav className="top-links">
-          <button className="top-link" onClick={() => setScreen('workspace')}>Workspace</button>
-          <button className="top-link" onClick={() => setScreen('cnf-final')}>CNF Output</button>
-          <button className="top-link" onClick={() => setScreen('gnf-compare')}>GNF Output</button>
-          <button className="top-link" onClick={() => setScreen('history')}>Archive</button>
+          <button className={`top-link ${screen === 'workspace' ? 'active' : ''}`} onClick={() => setScreen('workspace')}>Workspace</button>
+          <button className={`top-link ${screen === 'cnf-final' ? 'active' : ''}`} onClick={() => setScreen('cnf-final')}>CNF Output</button>
+          <button className={`top-link ${screen === 'gnf-compare' ? 'active' : ''}`} onClick={() => setScreen('gnf-compare')}>GNF Output</button>
+          <button className={`top-link ${screen === 'history' ? 'active' : ''}`} onClick={() => setScreen('history')}>Archive</button>
         </nav>
       </header>
-
       <div className={`layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         <aside className={`rail ${sidebarCollapsed ? 'collapsed' : ''}`}>
           <div className="rail-toggle">
@@ -925,7 +863,6 @@ function App() {
               {sidebarCollapsed ? <Menu size={18} /> : <X size={18} />}
             </button>
           </div>
-
           <div className="rail-sections">
             {navSections.map((section) => (
               <div key={section.label} className="rail-section">
@@ -936,7 +873,6 @@ function App() {
               </div>
             ))}
           </div>
-
           <div className="rail-bottom">
             <button className="btn-primary full" onClick={runCNF} disabled={!grammar || inputErrors.length > 0 || isConverting}>
               <Play size={14} />
@@ -951,11 +887,10 @@ function App() {
             </button>
           </div>
         </aside>
-
         <main className="content">{renderScreen()}</main>
       </div>
     </div>
   );
 }
-
 export default App;
+
