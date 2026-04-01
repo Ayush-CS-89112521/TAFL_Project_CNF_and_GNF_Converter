@@ -37,10 +37,11 @@ html {
 }
 
 body {
-  height: 100%;
+  height: auto;
   width: 100%;
   margin: 0;
   padding: 0;
+  scrollbar-gutter: stable;
   background: radial-gradient(circle at 10% 10%, #111820 0%, var(--bg-page) 38%) fixed;
   color: var(--text-secondary);
   font-family: 'Inter', system-ui, sans-serif;
@@ -83,7 +84,7 @@ code {
   background: #3a3a3a;
 }
 
-/* Pulse dot */
+
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
@@ -95,3 +96,4 @@ code {
   border-radius: 50%;
   animation: pulse-dot 1.8s ease-in-out infinite;
 }
+

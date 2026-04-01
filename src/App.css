@@ -16,7 +16,6 @@
 
 .topbar {
   height: 68px;
-  width: 100%;
   border-bottom: 1px solid var(--border-dim);
   display: grid;
   grid-template-columns: 1fr auto auto;
