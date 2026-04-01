@@ -473,7 +473,470 @@ useless(A) = not productive OR not reachable
 
 ---
 
-## 🔌 API Reference
+## � Detailed CNF Transformation Steps
+
+### Step 1: Epsilon Elimination
+
+**Problem**: Epsilon productions (A → ε) complicate parsing algorithms because they allow rules to derive empty strings, making it harder to predict what should come next in parsers.
+
+**Algorithm**:
+1. Compute the **nullable set** — all non-terminals that can derive ε
+2. For each rule A → X₁X₂...Xₖ where all Xᵢ can be nullable:
+   - Generate all possible combinations of removing nullable variables
+   - Add these new productions to the grammar
+3. Remove all ε-productions (keeping S → ε only if needed for empty language)
+
+**Example**:
+
+**Before:**
+```
+S → aA | ε
+A → b | ε
+```
+
+**Nullable Set**: {S, A} (both can derive ε)
+
+**Generated Alternatives**:
+- S → a**A** becomes S → a**A** | a (remove A)
+- A → **b** (no nullable symbols — keep as is)
+
+**After:**
+```
+S → aA | a
+A → b
+```
+
+**Why**: Now all productions are ε-free (except S → ε if input language is empty), making the grammar easier for deterministic parsers.
+
+---
+
+### Step 2: Unit Production Removal
+
+**Problem**: Unit productions (A → B where B is a single non-terminal) create chains like A → B → C → ... that are redundant — we can derive the same strings by replacing A directly with C's productions.
+
+**Algorithm**:
+1. Compute **unit closure** for each variable using BFS/Floyd-Warshall:
+   - unit_closure(A) = {B | A ⟹* B via unit productions}
+2. For each variable A and each B in unit_closure(A):
+   - For each non-unit production B → γ:
+     - Add rule A → γ
+3. Remove all unit productions (A → B rules)
+
+**Example**:
+
+**Before:**
+```
+S → A
+A → B
+B → a | b
+```
+
+**Unit Closures**:
+- unit_closure(S) = {S, A, B}
+- unit_closure(A) = {A, B}
+- unit_closure(B) = {B}
+
+**Replacement**:
+- S can reach production B → a and B → b, so add S → a | b
+- A can reach production B → a and B → b, so add A → a | b
+
+**After:**
+```
+S → a | b
+A → a | b
+B → a | b
+```
+
+**Why**: Eliminates intermediary non-terminals, reducing grammar complexity.
+
+---
+
+### Step 3: Useless Symbol Removal
+
+**Problem**: Some symbols are unreachable from the start symbol S (impossible to use in any derivation) or non-productive (can't derive any terminal string). These add clutter without contributing to language generation.
+
+**Algorithm** (Two-Phase):
+
+**Phase 1 — Find Productive Symbols**:
+- Mark all terminals as productive
+- Iterate: If all RHS symbols of rule A → X₁...Xₖ are productive, mark A as productive
+- Continue until no new symbols marked
+
+**Phase 2 — Find Reachable Symbols**:
+- Mark S as reachable
+- Iterate: If A is reachable and A → X₁X₂...Xₖ, mark all Xᵢ as reachable
+- Continue until no new symbols marked
+
+**Remove**: Any symbol not both productive AND reachable
+
+**Example**:
+
+**Before:**
+```
+S → aA | b
+A → aB | a
+B → a
+C → d
+```
+
+**Phase 1 — Productive**: S ✓, A ✓, B ✓, C ✓ (all can derive terminals)
+
+**Phase 2 — Reachable**: S ✓, A ✓ (from S → aA), B ✓ (from A → aB), C ✗ (unreachable)
+
+**After** (remove C):
+```
+S → aA | b
+A → aB | a
+B → a
+```
+
+**Why**: Ensures every symbol contributes to the language; improves parsing efficiency and grammar clarity.
+
+---
+
+### Step 4: Terminal Replacement
+
+**Problem**: CNF requires rules to be either:
+- A → BC (two non-terminals)
+- A → a (single terminal)
+
+But we have rules like A → aB (mix of terminal and non-terminal). We need to separate them.
+
+**Algorithm**:
+1. For each rule A → X₁X₂...Xₖ where k ≥ 2 and some Xᵢ are terminals:
+   - For each terminal 'a' in the rule:
+     - Create fresh variable T_a
+     - Add rule T_a → a
+     - Replace 'a' with T_a in the original rule
+2. Keep single-symbol rules unchanged
+
+**Example**:
+
+**Before:**
+```
+S → aA | a
+A → bB | b
+B → cC | c
+```
+
+**Terminal Replacements**:
+- Create: T_a → a, T_b → b, T_c → c
+- S → aA becomes S → T_a A
+- A → bB becomes A → T_b B
+- etc.
+
+**After**:
+```
+S → T_a A | a
+A → T_b B | b
+B → T_c C | c
+T_a → a
+T_b → b
+T_c → c
+```
+
+**Why**: Prepare grammar for binarization by ensuring multi-symbol rules contain only non-terminals.
+
+---
+
+### Step 5: Binarization
+
+**Problem**: CNF requires productions with exactly 2 or 1 symbols on RHS. But after terminal replacement, we may have rules like A → BCDE (4 non-terminals). We must break these into binary chains.
+
+**Algorithm**:
+1. For each rule A → X₁X₂...Xₙ where n ≥ 3:
+   - Create fresh variables Y₁, Y₂, ..., Yₙ₋₂
+   - Replace with chain:
+     - A → X₁Y₁
+     - Y₁ → X₂Y₂
+     - Y₂ → X₃Y₃
+     - ...
+     - Yₙ₋₂ → Xₙ₋₁Xₙ
+
+**Example**:
+
+**Before**:
+```
+S → ABCD
+A → aB
+```
+
+**Binarization of S → ABCD**:
+- Create Y₁, Y₂
+- Replace with:
+  - S → AY₁
+  - Y₁ → BY₂
+  - Y₂ → CD
+
+**After**:
+```
+S → AY₁
+A → aB
+Y₁ → BY₂
+Y₂ → CD
+```
+
+**All rules now have ✓ CNF form (A → BC or A → a)**
+
+**Why**: This is the final step that guarantees CNF — every production has at most 2 symbols.
+
+---
+
+## 🔄 Detailed GNF Transformation Steps
+
+### Step 1: Variable Ordering
+
+**Problem**: GNF requires productions to start with terminals. But some productions have non-terminal prefixes like A → B... To eliminate left-recursion predictably, we need a linear ordering of variables.
+
+**Algorithm**:
+1. Compute Strongly Connected Components (SCCs) of non-terminals:
+   - A and B are in same SCC if A ⟹* B and B ⟹* A (reachable in both directions)
+2. **Topological sort** SCCs by reverse-postorder
+3. Within each SCC, impose arbitrary ordering
+4. Assign A₁ = start symbol, A₂, A₃, ...
+
+**Example**:
+
+**Before**:
+```
+S → aA | B
+A → bS | a
+B → cA | c
+```
+
+**Dependency Graph**: S → B, S → A, A → S, B → A (forms SCC: {S, A})
+
+**Topological Order**: {S, A} comes before {B}
+
+**Final Ordering**: S = A₁, A = A₂, B = A₃
+
+**Why**: Ensures that when we eliminate left recursion, we do it in a way that prevents new left recursion from being introduced.
+
+---
+
+### Step 2: Production Substitution
+
+**Problem**: Before eliminating left recursion, we need all rules of Aᵢ to start with either:
+- A terminal 'a' (good for GNF)
+- A variable Aⱼ where j > i (we'll handle this in left-recursion step)
+
+Currently some may have Aⱼ where j < i (earlier variables), creating mutual dependencies.
+
+**Algorithm**:
+For i = 1 to n:
+- For each rule Aᵢ → Aⱼ γ where j < i:
+  - For each rule Aⱼ → δ:
+    - Add rule Aᵢ → δ γ
+  - Remove the rule Aᵢ → Aⱼ γ
+
+**Example**:
+
+**Before** (after ordering: S = A₁, A = A₂, B = A₃):
+```
+A₁ (S) → aA₂ | A₃c
+A₂ (A) → bA₁ | a
+A₃ (B) → cA₂ | c
+```
+
+**Substitution**:
+- A₁ → A₃c: Substitute A₃ → cA₂ | c
+  - Add: A₁ → cA₂c | cc
+  - Remove: A₁ → A₃c
+- A₂ → bA₁: Already has j=1, i=2, so j < i — this is left recursion (handle in next step)
+- A₃ → cA₂: j=2, i=3, so j < i — needs substitution?
+
+**After** (carefully applied):
+```
+A₁ → aA₂ | cA₂c | cc
+A₂ → bA₁ | a
+A₃ → cA₂ | c
+```
+
+**Why**: Ensures a clear dependency structure before left-recursion elimination.
+
+---
+
+### Step 3: Left Recursion Elimination
+
+**Problem**: Productions like A → Aα (starting with the same variable) prevent top-down parsing. We must eliminate them while preserving language.
+
+**Algorithm**:
+For each variable Aᵢ:
+- Separate productions into two groups:
+  - **Left-recursive**: Aᵢ → Aᵢ α₁ | Aᵢ α₂ | ... | Aᵢ αₖ
+  - **Non-left-recursive**: Aᵢ → β₁ | β₂ | ... | βₘ
+- Introduce new variable Zᵢ
+- Replace with:
+  - Aᵢ → β₁ | β₁Zᵢ | β₂ | β₂Zᵢ | ... | βₘ | βₘZᵢ
+  - Zᵢ → α₁ | α₁Zᵢ | α₂ | α₂Zᵢ | ... | αₖ | αₖZᵢ
+- Repeat until all direct left recursion eliminated
+
+**Intuition**: A → Aα | β is equivalent to A → β | βα*. We express this with auxiliary variable Z:
+- A produces β, then optionally chains more repetitions (Z)
+- Z produces α, then optionally chains more repetitions (Z)
+
+**Example**:
+
+**Before**:
+```
+A → Aa | b
+```
+
+**Separation**:
+- Left-recursive: A → Aa (α = a)
+- Non-left-recursive: A → b (β = b)
+
+**Elimination**:
+- Introduce: Z_A
+- Replace with:
+  - A → b | bZ_A
+  - Z_A → a | aZ_A
+
+**Derivation Check**:
+- Old: A ⟹ b, A ⟹ Aa ⟹ ba, A ⟹ Aa ⟹ Aaa ⟹ baa, ... (derives b, ba, baa, ...)
+- New: A ⟹ b (same), A ⟹ bZ_A ⟹ ba (same), A ⟹ bZ_A ⟹ baZ_A ⟹ baa (same), ... ✓
+
+**Why**: Removes left recursion, enabling top-down (LL) parsing.
+
+---
+
+### Step 4: Back-Substitution
+
+**Problem**: After steps 1-3, we have productions like:
+- Aᵢ → a... (starts with terminal ✓)
+- Aᵢ → Aⱼ... where j > i (starts with non-terminal ✗)
+- Zᵢ → a... (starts with terminal ✓)
+- Zᵢ → Aⱼ... (starts with non-terminal ✗)
+
+The second and fourth types need **back-substitution** to convert non-terminal prefixes to terminals.
+
+**Algorithm**:
+- While there exist productions Aᵢ → Aⱼ γ or Zᵢ → Aⱼ γ:
+  - For each such production:
+    - For each rule Aⱼ → δ:
+      - Add rule (same variable) → δ γ
+    - Remove the production starting with Aⱼ
+
+**Example**:
+
+**Before**:
+```
+A₁ → aA₂ | cA₃
+A₂ → b
+A₃ → dA₂ | e
+```
+
+**Back-substitution**:
+- A₁ → cA₃: Substitute A₃ → dA₂ | e
+  - Add: A₁ → cdA₂ | ce
+  - Remove: A₁ → cA₃
+- A₃ → dA₂: Substitute A₂ → b
+  - Add: A₃ → db
+  - Remove: A₃ → dA₂
+
+**After**:
+```
+A₁ → aA₂ | cdA₂ | ce
+A₂ → b
+A₃ → db | e
+```
+
+**All rules now start with terminals ✓ (GNF form: A → aα)**
+
+**Why**: Final transformation to achieve Greibach Normal Form — enables predictable top-down parsing.
+
+---
+
+## 📖 Complete Example: CFG → CNF → GNF
+
+**Input Grammar (CFG)**:
+```
+S → aSb | ε
+A → b
+```
+
+**CNF Conversion**:
+
+1. **Epsilon Elimination**:
+   - Nullable: {S}
+   - S → aSb becomes S → aSb | ab (remove S from second position)
+   ```
+   S → aSb | ab
+   A → b
+   ```
+
+2. **Unit Removal** (none needed):
+   ```
+   S → aSb | ab
+   A → b
+   ```
+
+3. **Useless Removal** (A is unused):
+   ```
+   S → aSb | ab
+   ```
+
+4. **Terminal Replacement**:
+   - Create T_a → a, T_b → b
+   ```
+   S → T_a S T_b | T_a T_b
+   T_a → a
+   T_b → b
+   ```
+
+5. **Binarization**:
+   - S → T_a S T_b (3 symbols): Create X₁
+     - S → T_a X₁
+     - X₁ → S T_b
+   ```
+   S → T_a X₁ | T_a T_b
+   X₁ → S T_b
+   T_a → a
+   T_b → b
+   ```
+
+**GNF Conversion** (from CNF above):
+
+1. **Variable Ordering**: S = A₁, T_a = A₂, T_b = A₃, X₁ = A₄
+   
+2. **Production Substitution** (rearrange):
+   - All start with appropriate order
+   
+3. **Left Recursion Elimination** (X₁ → S T_b, S → T_a X₁ — cycles exist):
+   - S → T_a X₁: j < i, so substitute T_a → a
+     - Add: S → aX₁
+   - X₁ → S T_b: Substitute S → aX₁ | T_a T_b
+     - Add: X₁ → aX₁T_b | T_a T_b T_b
+   - Remove X₁ → S T_b (left recursion pair)
+   
+   Result: No direct left recursion (aX₁T_b is left recursion!)
+   - X₁ → aX₁T_b is left-recursive (α = T_b, β = T_a T_b T_b)
+   - Introduce Z_X₁
+   - X₁ → T_a T_b T_b | T_a T_b T_b Z_X₁
+   - Z_X₁ → T_b | T_b Z_X₁
+
+4. **Back-Substitution**:
+   - Replace terminal variables with actual terminals
+   - S → aX₁ (keep)
+   - T_a → a (already terminal prefix) ✓
+   - T_b → b (already terminal prefix) ✓
+   - X₁ → T_a... becomes X₁ → aT_b T_b | aT_b T_b Z_X₁ (substitute T_a → a)
+   - Z_X₁ → T_b becomes Z_X₁ → b (substitute T_b → b)
+
+**Final GNF**:
+```
+S → aX₁
+X₁ → aT_b T_b | aT_b T_b Z_X₁
+T_a → a
+T_b → b
+Z_X₁ → b | bZ_X₁
+```
+
+✓ **All productions start with terminals** (Greibach Normal Form)
+
+---
+
+## �🔌 API Reference
 
 ### State Store (Zustand)
 
