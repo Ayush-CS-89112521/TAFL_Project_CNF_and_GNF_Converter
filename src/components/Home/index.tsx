@@ -1,7 +1,11 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap, Sparkles, Code2, Network, Play, Grid3x3 } from 'lucide-react';
+import { ArrowRight, Zap, Sparkles, Code2, Network } from 'lucide-react';
+import grammerInputImg from '../../../Images/grammer_input.png';
+import graphVizImg from '../../../Images/graph visualization.png';
+import stepViewImg from '../../../Images/step_view.png';
+import outputFormatImg from '../../../Images/output_format.png';
 
 const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -100,10 +104,7 @@ export function Home() {
                 <div className="bento-label">01 / INPUT</div>
                 <h3>Grammar Input</h3>
                 <p>Direct ingestion of CFGs, EBNF, and custom grammar formats with real-time linting.</p>
-                <div className="bento-image-placeholder">
-                  <Grid3x3 size={40} />
-                  <span>Grammar Input Interface</span>
-                </div>
+                <img src={grammerInputImg} alt="Grammar Input Interface" style={{ width: '100%', borderRadius: '0.75rem', marginTop: '1rem' }} />
               </div>
             </ScrollReveal>
 
@@ -113,10 +114,7 @@ export function Home() {
                 <div className="bento-label">02 / VISUALIZE</div>
                 <h3>Visual Graph</h3>
                 <p>Interactive state-machine mapping of your language rules.</p>
-                <div className="bento-image-placeholder">
-                  <Network size={40} />
-                  <span>Graph View</span>
-                </div>
+                <img src={graphVizImg} alt="Graph View" style={{ width: '100%', borderRadius: '0.75rem', marginTop: '1rem' }} />
               </div>
             </ScrollReveal>
 
@@ -126,10 +124,7 @@ export function Home() {
                 <div className="bento-label">03 / ANALYSIS</div>
                 <h3>Step Analysis</h3>
                 <p>Trace the normalization process through every transformation stage.</p>
-                <div className="bento-image-placeholder">
-                  <Play size={40} />
-                  <span>Step View</span>
-                </div>
+                <img src={stepViewImg} alt="Step View" style={{ width: '100%', borderRadius: '0.75rem', marginTop: '1rem' }} />
               </div>
             </ScrollReveal>
 
@@ -139,10 +134,7 @@ export function Home() {
                 <div className="bento-label">04 / EXPORT</div>
                 <h3>Final Normalized Output</h3>
                 <p>Production-ready grammars optimized for LLVM or custom parser generators.</p>
-                <div className="bento-image-placeholder">
-                  <Grid3x3 size={40} />
-                  <span>Output Format</span>
-                </div>
+                <img src={outputFormatImg} alt="Output Format" style={{ width: '100%', borderRadius: '0.75rem', marginTop: '1rem' }} />
               </div>
             </ScrollReveal>
           </div>
