@@ -10,6 +10,7 @@ import { grammarToString } from '../lib/grammarToString';
 export type AppMode = 'cnf' | 'gnf';
 export type GraphViewMode = 'original' | 'cnf' | 'gnf';
 export type AppScreen =
+  | 'home'
   | 'workspace'
   | 'steps'
   | 'table'
