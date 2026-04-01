@@ -61,7 +61,7 @@ export function exportGrammarToPdf(
     pdf.setFillColor(245, 248, 250);
     pdf.setDrawColor(31, 58, 105);
     pdf.setLineWidth(0.5);
-    pdf.rect(margin, yPos - 3, pageWidth - 2 * margin, 24, 'FD');
+    pdf.rect(margin, yPos - 3, pageWidth - 2 * margin, 30, 'FD');
     pdf.setFontSize(10);
     pdf.setTextColor(31, 58, 105);
     pdf.setFont('helvetica', 'bold');
@@ -72,7 +72,7 @@ export function exportGrammarToPdf(
     pdf.text(`Start Symbol: ${ruleStats.startSymbol}`, margin + 3, yPos + 10);
     pdf.text(`Non-Terminals: ${ruleStats.nonTerminals}`, margin + 3, yPos + 16);
     pdf.text(`Terminals: ${ruleStats.terminals}`, margin + 3, yPos + 22);
-    yPos += 30;
+    yPos += 36;
   }
   pdf.setFontSize(12);
   pdf.setTextColor(31, 58, 105);
