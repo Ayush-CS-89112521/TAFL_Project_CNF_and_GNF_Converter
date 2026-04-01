@@ -1,12 +1,13 @@
 .app-root {
-  height: 100vh;
-  width: 100vw;
+  height: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 140px), var(--bg-app);
   color: var(--text-secondary);
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -942,7 +943,7 @@ button:disabled {
   margin-top: 14px;
 }
 
-/* Export Grid Styles */
+
 .export-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -1002,14 +1003,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* GNF Graph Screen */
+
 .screen-gnf-graph {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* GNF Graph Screen */
+
 .screen-gnf-graph {
   display: flex;
   flex-direction: column;
@@ -1022,7 +1023,7 @@ button:disabled {
   gap: 20px;
 }
 
-/* Enhanced Button Styling */
+
 .btn-primary,
 .btn-secondary {
   border-radius: 5px;
@@ -1081,7 +1082,7 @@ button:disabled {
   width: 100%;
 }
 
-/* Panel Enhancements */
+
 .panel {
   position: relative;
   overflow: hidden;
@@ -1103,7 +1104,7 @@ button:disabled {
   opacity: 1;
 }
 
-/* Metric Card Improvements */
+
 .metric-card {
   padding: 16px;
   background: rgba(255, 255, 255, 0.03);
@@ -1124,7 +1125,7 @@ button:disabled {
   margin-top: 6px;
 }
 
-/* Hero Section Enhancement */
+
 .hero-title {
   background: linear-gradient(180deg, #ffffff, #b7ceff);
   -webkit-background-clip: text;
@@ -1137,7 +1138,7 @@ button:disabled {
   line-height: 1.6;
 }
 
-/* Matrix Card Improvements */
+
 .matrix-card {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -1154,7 +1155,7 @@ button:disabled {
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Symmetric State Pills */
+
 .state-pill {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
@@ -1180,7 +1181,7 @@ button:disabled {
   color: #ffd966;
 }
 
-/* Symbol Styling */
+
 .sym-nt {
   color: #4a8fff;
   font-weight: 600;
@@ -1207,7 +1208,7 @@ button:disabled {
   font-weight: 300;
 }
 
-/* Editor Area Enhancement */
+
 .editor-area {
   width: 100%;
   min-height: 200px;
@@ -1235,7 +1236,7 @@ button:disabled {
   box-shadow: 0 0 0 3px rgba(224, 82, 82, 0.1);
 }
 
-/* Error Stack */
+
 .error-stack {
   margin-top: 10px;
   padding: 10px;
@@ -1251,7 +1252,7 @@ button:disabled {
   font-size: 0.85rem;
 }
 
-/* Empty Card */
+
 .empty-card {
   padding: 60px 20px;
   text-align: center;
@@ -1262,7 +1263,7 @@ button:disabled {
   font-style: italic;
 }
 
-/* Stage Line Enhancement */
+
 .stage-line {
   display: flex;
   gap: 12px;
@@ -1312,7 +1313,7 @@ button:disabled {
   box-shadow: 0 0 8px currentColor;
 }
 
-/* Text Button */
+
 .text-btn {
   background: transparent;
   border: none;
@@ -1338,7 +1339,7 @@ button:disabled {
   color: #ff9999;
 }
 
-/* Enhanced Export Card Styling */
+
 .export-card {
   padding: 18px;
   background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
@@ -1472,7 +1473,7 @@ button:disabled {
   margin: 0 0 12px 0;
 }
 
-/* Enhanced Export Actions */
+
 .export-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1562,7 +1563,7 @@ button:disabled {
   }
 }
 
-/* ===================== HOME PAGE STYLES ===================== */
+
 
 .home-container {
   width: 100%;
@@ -1572,7 +1573,7 @@ button:disabled {
   scroll-behavior: smooth;
 }
 
-/* Hero Section */
+
 .hero-section {
   min-height: 60vh;
   display: flex;
@@ -1633,7 +1634,7 @@ button:disabled {
   transform: translateY(0);
 }
 
-/* Showcase Section */
+
 .showcase-section {
   padding: 5rem 2rem;
   max-width: 1200px;
@@ -1721,7 +1722,7 @@ button:disabled {
   margin-bottom: 1rem;
 }
 
-/* Feature Sections (CNF & GNF) */
+
 .feature-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1798,7 +1799,7 @@ button:disabled {
   transform: translateY(0);
 }
 
-/* CTA Section */
+
 .cta-section {
   padding: 5rem 2rem;
   margin: 3rem auto;
@@ -1847,7 +1848,7 @@ button:disabled {
   transform: translateY(-1px);
 }
 
-/* Footer */
+
 .home-footer {
   background: linear-gradient(135deg, #0e0e0e 0%, #1a1a2e 100%);
   border-top: 1px solid #2a2a3e;
@@ -1928,7 +1929,7 @@ button:disabled {
   font-size: 0.9rem;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .hero-main-title {
     font-size: 2.25rem;
@@ -2007,9 +2008,7 @@ button:disabled {
   }
 }
 
-/* ============================================
-   LANDING PAGE - NEW DESIGN
-   ============================================ */
+
 
 .landing-page {
   background: linear-gradient(135deg, #0e0e0e 0%, #1a1a2e 100%);
@@ -2018,7 +2017,7 @@ button:disabled {
   overflow-x: hidden;
 }
 
-/* Hero Section */
+
 .landing-hero {
   min-height: 100vh;
   display: flex;
@@ -2122,7 +2121,7 @@ button:disabled {
   transform: translateY(-2px);
 }
 
-/* Code Showcase */
+
 .code-showcase {
   padding: 80px 40px;
   max-width: 1200px;
@@ -2161,7 +2160,7 @@ button:disabled {
   word-break: break-word;
 }
 
-/* Harmony Section */
+
 .harmony-section {
   padding: 100px 40px;
   max-width: 1200px;
@@ -2223,7 +2222,7 @@ button:disabled {
   line-height: 1.6;
 }
 
-/* Lab & Gallery Section */
+
 .lab-gallery-section {
   padding: 100px 40px;
   max-width: 1200px;
@@ -2315,7 +2314,7 @@ button:disabled {
   text-align: center;
 }
 
-/* CTA Section */
+
 .landing-cta {
   padding: 100px 40px;
   text-align: center;
@@ -2361,7 +2360,7 @@ button:disabled {
   box-shadow: 0 15px 40px rgba(74, 143, 255, 0.3);
 }
 
-/* Footer */
+
 .landing-footer {
   background: #0a0a0a;
   border-top: 1px solid #333;
@@ -2413,7 +2412,7 @@ button:disabled {
   font-size: 0.85rem;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .landing-hero-title {
     font-size: 2.5rem;
@@ -2475,9 +2474,7 @@ button:disabled {
   }
 }
 
-/* ============================================
-   EDUCATIONAL SECTIONS - CNF & GNF
-   ============================================ */
+
 
 .edu-section {
   padding: 100px 40px;
@@ -2783,7 +2780,7 @@ button:disabled {
   background: linear-gradient(135deg, #3dbb6e, #4a8fff);
 }
 
-/* Responsive for Educational Sections */
+
 @media (max-width: 1024px) {
   .edu-container {
     grid-template-columns: 1fr;
@@ -2858,7 +2855,7 @@ button:disabled {
   }
 }
 
-/* ==================== LUMINOUS ARCHIVE LANDING PAGE ==================== */
+
 
 html {
   scroll-behavior: smooth;
@@ -2868,11 +2865,13 @@ html {
 .luminous-page {
   background: #060e20;
   color: #dee5ff;
-  min-height: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* Navigation */
+
 .luminous-nav {
   position: fixed;
   top: 0;
@@ -2981,12 +2980,12 @@ html {
   }
 }
 
-/* Main Content */
+
 .luminous-main {
   padding-top: 6rem;
 }
 
-/* Hero Section */
+
 .hero-section {
   position: relative;
   min-height: 870px;
@@ -3136,7 +3135,7 @@ html {
   overflow: hidden;
 }
 
-/* Bento Grid Section */
+
 .bento-section {
   padding: 8rem 2rem;
   max-width: 80rem;
@@ -3241,12 +3240,12 @@ html {
   .bento-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .bento-item,
   .bento-span-2 {
     grid-column: span 1;
   }
-  
+
   .hero-title {
     font-size: 2rem;
   }
@@ -3256,14 +3255,14 @@ html {
   .bento-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .bento-item,
   .bento-span-2 {
     grid-column: span 1;
   }
 }
 
-/* CNF Section */
+
 .cnf-section {
   padding: 8rem 2rem;
   max-width: 80rem;
@@ -3445,7 +3444,7 @@ html {
   margin: 0;
 }
 
-/* Code Block */
+
 .code-block {
   background: #0f1930;
   border: 1px solid rgba(64, 72, 93, 0.1);
@@ -3506,7 +3505,7 @@ html {
   white-space: pre-wrap;
 }
 
-/* GNF Section */
+
 .gnf-section {
   padding: 8rem 2rem;
   max-width: 80rem;
@@ -3640,19 +3639,19 @@ html {
   .gnf-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .cnf-section,
   .gnf-section,
   .bento-section {
     padding: 4rem 1rem;
   }
-  
+
   .hero-title {
     font-size: 1.75rem;
   }
 }
 
-/* Footer */
+
 .luminous-footer {
   background: #060e20;
   border-top: 1px solid rgba(25, 37, 64, 0.15);
@@ -3716,9 +3715,45 @@ html {
   color: #69f6b8;
 }
 
-/* ==================== NEW HOME PAGE STYLES ==================== */
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-/* Showcase Section */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #a3aac4;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.social-link:hover {
+  color: #69f6b8;
+  background: rgba(105, 246, 184, 0.1);
+  transform: translateX(4px);
+}
+
+.social-link svg {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+
+
+
 .showcase-section {
   width: 100%;
   padding: 100px 60px;
@@ -3817,7 +3852,7 @@ html {
   line-height: 1.7;
 }
 
-/* About Sections */
+
 .about-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3971,7 +4006,7 @@ html {
   word-break: break-word;
 }
 
-/* Center Box */
+
 .center-box-wrapper {
   display: flex;
   justify-content: center;
@@ -4046,7 +4081,7 @@ html {
   transform: translateY(0);
 }
 
-/* Footer Updates */
+
 .landing-footer {
   background: rgba(10, 10, 10, 0.95);
   border-top: 1px solid var(--border-dim);
@@ -4135,7 +4170,7 @@ html {
   margin: 0;
 }
 
-/* Generic Image Placeholder */
+
 .image-placeholder {
   display: flex;
   align-items: center;
@@ -4145,7 +4180,7 @@ html {
   background: linear-gradient(135deg, rgba(74, 143, 255, 0.08), rgba(61, 187, 110, 0.04));
 }
 
-/* ==================== RESPONSIVE DESIGN ==================== */
+
 
 @media (max-width: 1024px) {
   .showcase-section {
@@ -4408,3 +4443,4 @@ html {
     font-size: 0.75rem;
   }
 }
+
