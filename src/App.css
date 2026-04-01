@@ -3662,8 +3662,8 @@ html {
   max-width: 80rem;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 2fr 1.5fr 1.5fr;
+  gap: 3rem;
 }
 
 .footer-col h3 {

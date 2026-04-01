@@ -272,15 +272,6 @@ def to_cnf(grammar):
             <p>Simplify grammar transformation with automatic conversion to Chomsky Normal Form and Greibach Normal Form. Essential for compiler development and formal language research.</p>
           </div>
           <div className="footer-col">
-            <h4>Resources</h4>
-            <ul>
-              <li><a href="https://github.com/Ayush-CS-89112521/TAFL_Project_CNF_and_GNF_Converter/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentation</a></li>
-              <li><a href="https://github.com/Ayush-CS-89112521/TAFL_Project_CNF_and_GNF_Converter/blob/main/src/grammar/types.ts" target="_blank" rel="noopener noreferrer">API Reference</a></li>
-              <li><a href="https://github.com/Ayush-CS-89112521/TAFL_Project_CNF_and_GNF_Converter/commits/main" target="_blank" rel="noopener noreferrer">Changelog</a></li>
-              <li><a href="https://github.com/Ayush-CS-89112521/TAFL_Project_CNF_and_GNF_Converter/discussions" target="_blank" rel="noopener noreferrer">Community</a></li>
-            </ul>
-          </div>
-          <div className="footer-col">
             <h4>Learning Resources</h4>
             <ul>
               <li><a href="https://en.wikipedia.org/wiki/Chomsky_normal_form" target="_blank" rel="noopener noreferrer">Chomsky Normal Form</a></li>
