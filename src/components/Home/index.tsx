@@ -1,11 +1,13 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap, Sparkles, Code2, Network } from 'lucide-react';
+import { ArrowRight, Zap, Sparkles, Code2 } from 'lucide-react';
 import grammerInputImg from '../../../Images/grammer_input.png';
 import graphVizImg from '../../../Images/graph visualization.png';
 import stepViewImg from '../../../Images/step_view.png';
 import outputFormatImg from '../../../Images/output_format.png';
+import codeEditorImg from '../../../Images/code_editor_interface.png';
+import serverComputingImg from '../../../Images/server_computing_infrasture.png';
 
 const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -77,13 +79,10 @@ export function Home() {
             </div>
           </ScrollReveal>
 
-          {/* Hero Image Placeholder */}
+          {/* Hero Image */}
           <ScrollReveal delay={0.2}>
             <div className="hero-image-container">
-              <div className="hero-image-placeholder">
-                <Code2 size={48} />
-                <p>Code Editor Interface</p>
-              </div>
+              <img src={codeEditorImg} alt="Code Editor Interface" style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid rgba(133, 173, 255, 0.2)' }} />
             </div>
           </ScrollReveal>
         </section>
@@ -249,10 +248,7 @@ def to_cnf(grammar):
                 <p>
                   Named after Sheila Greibach, this form is pivotal in the construction of LL(1) parsers. Every derivation leads with a terminal, essentially creating a 'lookahead' window that eliminates the ambiguity found in deeper nested non-terminal structures.
                 </p>
-                <div className="gnf-image-placeholder">
-                  <Network size={48} />
-                  <p>Server/Computing Infrastructure</p>
-                </div>
+                <img src={serverComputingImg} alt="Server/Computing Infrastructure" style={{ width: '100%', borderRadius: '0.75rem', marginTop: '1.5rem', border: '1px solid rgba(133, 173, 255, 0.2)' }} />
               </div>
             </div>
           </ScrollReveal>
