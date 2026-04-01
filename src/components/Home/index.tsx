@@ -1,11 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Code2, Network, Clock, CheckCircle2, Download } from 'lucide-react';
-import type { AppScreen } from '../../store/grammarStore';
-
-interface HomeProps {
-  setScreen: (screen: AppScreen) => void;
-}
 
 const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -23,7 +19,8 @@ const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; dela
   );
 };
 
-export function Home({ setScreen }: HomeProps) {
+export function Home() {
+  const navigate = useNavigate();
   return (
     <section className="landing-page">
       {/* Hero Section */}
@@ -52,7 +49,7 @@ export function Home({ setScreen }: HomeProps) {
           <div className="hero-actions">
             <motion.button
               className="btn-hero-primary"
-              onClick={() => setScreen('workspace')}
+              onClick={() => navigate('/tool')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -60,7 +57,7 @@ export function Home({ setScreen }: HomeProps) {
             </motion.button>
             <motion.button
               className="btn-hero-secondary"
-              onClick={() => setScreen('history')}
+              onClick={() => navigate('/tool?view=history')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -398,7 +395,7 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
           <p>Connect your repository or input rules directly to begin the archival process.</p>
           <motion.button
             className="btn-cta-primary"
-            onClick={() => setScreen('workspace')}
+            onClick={() => navigate('/tool')}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
           >

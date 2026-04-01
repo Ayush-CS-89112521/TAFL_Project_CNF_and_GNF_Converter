@@ -8,7 +8,6 @@ import {
   GitFork,
   Grid3x3,
   History,
-  Home,
   LayoutDashboard,
   Menu,
   Network,
@@ -17,7 +16,6 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
-import { Home as HomePage } from './components/Home';
 import { GrammarGraphPanel } from './components/GrammarGraphPanel';
 import { useGrammarStore, type AppScreen } from './store/grammarStore';
 import { parseGrammar } from './grammar/parser';
@@ -38,10 +36,6 @@ interface NavSection {
 }
 
 const navSections: NavSection[] = [
-  {
-    label: 'Getting Started',
-    items: [{ id: 'home', label: 'Home', icon: Home }]
-  },
   {
     label: 'Workspace',
     items: [{ id: 'workspace', label: 'Workspace', icon: LayoutDashboard }]
@@ -146,7 +140,12 @@ function App() {
     const { grammar: parsedGrammar, errors } = parseGrammar(inputText);
     setGrammar(parsedGrammar, errors);
     didInitRef.current = true;
-  }, [inputText, setInputText, setGrammar]);
+
+    // Set default to workspace since /home is now a separate route
+    if (!screen || screen === 'home') {
+      setScreen('workspace');
+    }
+  }, [inputText, setInputText, setGrammar, screen, setScreen]);
 
   const handleInputChange = (value: string) => {
     setInputText(value);
@@ -224,10 +223,6 @@ function App() {
   };
 
   const renderScreen = () => {
-    if (screen === 'home') {
-      return <HomePage setScreen={setScreen} />;
-    }
-
     if (screen === 'workspace') {
       return (
         <section className="screen-workspace">
