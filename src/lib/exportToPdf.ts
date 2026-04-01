@@ -148,7 +148,7 @@ export function exportComparisonToPdf(
   pdf.setFontSize(18);
   pdf.setTextColor(255, 255, 255); // White text
   pdf.setFont('helvetica', 'bold');
-  pdf.text(transformationName, margin, 12);
+  pdf.text(sanitizeForPdf(transformationName), margin, 12);
   yPos = 25;
   pdf.setFontSize(11);
   pdf.setTextColor(31, 58, 105); // Dark blue

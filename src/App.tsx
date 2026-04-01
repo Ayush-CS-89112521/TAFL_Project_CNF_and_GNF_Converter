@@ -658,7 +658,7 @@ function App() {
                       className="btn-secondary compare"
                       onClick={() => {
                         if (grammar) {
-                          downloadComparisonPdf(grammar, cnfFinal, 'CFG → CNF Conversion', 'comparison-cnf.pdf');
+                          downloadComparisonPdf(grammar, cnfFinal, 'CFG -> CNF Conversion', 'comparison-cnf.pdf');
                         }
                       }}
                       disabled={!grammar}
@@ -726,7 +726,7 @@ function App() {
                       className="btn-secondary compare"
                       onClick={() => {
                         if (grammar) {
-                          downloadComparisonPdf(grammar, gnfFinal, 'CFG → GNF Conversion', 'comparison-gnf.pdf');
+                          downloadComparisonPdf(grammar, gnfFinal, 'CFG -> GNF Conversion', 'comparison-gnf.pdf');
                         }
                       }}
                       disabled={!grammar}
