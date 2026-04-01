@@ -16,21 +16,21 @@
 
 .topbar {
   height: 76px;
-  border-bottom: 1px solid rgba(74, 143, 255, 0.15);
+  border-bottom: 2px solid rgba(74, 143, 255, 0.25);
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
   padding: 0 24px;
   gap: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 40%), rgba(11, 13, 17, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: linear-gradient(135deg, rgba(74, 143, 255, 0.03) 0%, rgba(74, 143, 255, 0.01) 50%, transparent), rgba(8, 10, 14, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 30;
-  box-shadow: 0 2px 12px rgba(74, 143, 255, 0.06);
+  box-shadow: 0 4px 24px rgba(74, 143, 255, 0.15), inset 0 1px 0 rgba(74, 143, 255, 0.1);
 }
 
 .brand-block {
@@ -40,14 +40,18 @@
 }
 
 .brand {
-  color: var(--text-primary);
+  color: #ffffff;
   font-weight: 800;
   letter-spacing: 0.02em;
   font-size: 1.75rem;
   line-height: 1;
-  padding-left: 12px;
-  border-left: 3px solid #4a8fff;
-  text-shadow: 0 0 20px rgba(74, 143, 255, 0.2);
+  padding-left: 14px;
+  border-left: 4px solid #4a8fff;
+  text-shadow: 0 0 24px rgba(74, 143, 255, 0.35), 0 0 48px rgba(74, 143, 255, 0.15);
+  background: linear-gradient(90deg, #ffffff 0%, rgba(212, 227, 255, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .brand-sub {
@@ -65,15 +69,16 @@
 }
 
 .top-link {
-  border: 1px solid transparent;
+  border: 1.5px solid transparent;
   background: transparent;
-  color: var(--text-muted);
-  padding: 8px 14px;
-  border-radius: 6px;
+  color: rgba(144, 144, 144, 0.8);
+  padding: 10px 16px;
+  border-radius: 8px;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
   cursor: pointer;
   transition: all var(--dur-fast) var(--ease);
   position: relative;
@@ -81,15 +86,17 @@
 
 .top-link:hover {
   color: #4a8fff;
-  background: rgba(74, 143, 255, 0.08);
-  border-color: #4a8fff;
+  background: rgba(74, 143, 255, 0.12);
+  border-color: rgba(74, 143, 255, 0.4);
+  box-shadow: 0 0 16px rgba(74, 143, 255, 0.2);
 }
 
 .top-link.active {
   color: #ffffff;
-  background: rgba(74, 143, 255, 0.12);
+  background: rgba(74, 143, 255, 0.18);
   border-color: #4a8fff;
-  box-shadow: 0 0 12px rgba(74, 143, 255, 0.25);
+  box-shadow: 0 0 20px rgba(74, 143, 255, 0.35), inset 0 0 12px rgba(74, 143, 255, 0.1);
+  font-weight: 600;
 }
 
 .top-actions {
