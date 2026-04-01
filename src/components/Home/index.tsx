@@ -1,5 +1,5 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Zap, Sparkles, Code2 } from 'lucide-react';
 import grammerInputImg from '../../../Images/grammer_input.png';
@@ -28,19 +28,48 @@ const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; dela
 export function Home() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'precision-infrastructure', 'cnf', 'gnf'];
+      let currentSection = 'home';
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 100) {
+            currentSection = sectionId;
+          }
+        }
+      }
+
+      // Update nav link styles
+      document.querySelectorAll('.nav-link').forEach((link) => {
+        link.classList.remove('active');
+      });
+      const activeLink = document.querySelector(`a[href="#${currentSection}"]`);
+      if (activeLink) {
+        activeLink.classList.add('active');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="luminous-page">
       {/* Navigation Bar */}
       <nav className="luminous-nav">
         <div className="nav-container">
           <div className="nav-logo">
-            <span className="logo-text">Luminous Archive</span>
+            <span className="logo-text">CNF & GNF Converter</span>
           </div>
           <div className="nav-links">
-            <a href="#home" className="nav-link">Home</a>
-            <a href="#about" className="nav-link">About</a>
-            <a href="#transform" className="nav-link">Transform</a>
-            <a href="#archive" className="nav-link active">Archive</a>
+            <a href="#home" className="nav-link active">Home</a>
+            <a href="#precision-infrastructure" className="nav-link">Precision Infrastructure</a>
+            <a href="#cnf" className="nav-link">CNF</a>
+            <a href="#gnf" className="nav-link">GNF</a>
           </div>
           <button className="nav-cta-btn" onClick={() => navigate('/tool')}>
             Launch Tool
@@ -50,7 +79,7 @@ export function Home() {
 
       <main className="luminous-main">
         {/* Hero Section */}
-        <section className="hero-section">
+        <section id="home" className="hero-section">
           <div className="hero-grid-bg"></div>
           <div className="hero-gradient"></div>
           
@@ -58,15 +87,15 @@ export function Home() {
             <div className="hero-content">
               <div className="version-badge">
                 <Sparkles size={16} />
-                <span>Version 4.0 Archive Engine now live</span>
+                <span>Grammar Conversion Engine v1.0</span>
               </div>
 
               <h1 className="hero-title">
-                Transform Grammars with <span className="hero-gradient-text">Precision and Clarity.</span>
+                Convert Context-Free Grammars to <span className="hero-gradient-text">CNF & GNF</span>
               </h1>
 
               <p className="hero-subtitle">
-                The professional standard for normalizing, visualizing, and analyzing complex language grammars. Engineered for clarity, built for developers.
+                Automatically transform your context-free grammars into Chomsky Normal Form and Greibach Normal Form. A powerful tool for formal language analysis and automated parsing.
               </p>
 
               <div className="hero-actions">
@@ -74,7 +103,6 @@ export function Home() {
                   Start Converting
                   <ArrowRight size={18} />
                 </button>
-                <button className="btn-secondary">View Demo</button>
               </div>
             </div>
           </ScrollReveal>
@@ -88,11 +116,11 @@ export function Home() {
         </section>
 
         {/* Project Capabilities - Bento Grid */}
-        <section className="bento-section">
+        <section id="precision-infrastructure" className="bento-section">
           <ScrollReveal>
             <div className="bento-header">
-              <h2>Precision Infrastructure</h2>
-              <p>Deep-dive into our modular pipeline designed to handle the most rigorous linguistic requirements.</p>
+              <h2>Conversion Pipeline</h2>
+              <p>A complete workflow for transforming context-free grammars through input, visualization, step-by-step analysis, and formatted output.</p>
             </div>
           </ScrollReveal>
 
@@ -140,7 +168,7 @@ export function Home() {
         </section>
 
         {/* CNF Section */}
-        <section className="cnf-section">
+        <section id="cnf" className="cnf-section">
           <ScrollReveal>
             <div className="cnf-grid">
               {/* CNF Content */}
@@ -159,6 +187,21 @@ export function Home() {
                     <div className="rule-notation">A → a</div>
                     <div className="rule-desc">Terminal transition</div>
                   </div>
+                </div>
+
+                <div className="cnf-benefits">
+                  <h4>Key Advantages</h4>
+                  <ul className="cnf-list">
+                    <li>Enables efficient CYK parsing algorithm with O(n³) complexity</li>
+                    <li>Simplifies grammar analysis and transformation</li>
+                    <li>Guarantees uniform derivation structure</li>
+                    <li>Essential for automated syntax analysis and parsing</li>
+                  </ul>
+                </div>
+
+                <div className="cnf-transform">
+                  <h4>Transformation Process</h4>
+                  <p className="cnf-small-text">Convert any Context-Free Grammar into CNF through systematic elimination of epsilon productions, unit productions, and useless symbols. Our tool automates this entire pipeline while preserving the language semantics.</p>
                 </div>
               </div>
 
@@ -221,7 +264,7 @@ def to_cnf(grammar):
         </section>
 
         {/* GNF Section */}
-        <section className="gnf-section">
+        <section id="gnf" className="gnf-section">
           <ScrollReveal>
             <div className="gnf-grid">
               {/* GNF Info Cards */}
@@ -259,9 +302,9 @@ def to_cnf(grammar):
       <footer className="luminous-footer">
         <div className="footer-content">
           <div className="footer-col">
-            <h3>Luminous Archive</h3>
-            <p>High-precision developer tools for formal language theory and syntactic transformation. Engineered for clarity and performance.</p>
-            <p className="footer-copyright">© 2024 Luminous Archive. Engineered for Precision.</p>
+            <h3>CNF & GNF Converter</h3>
+            <p>Simplify grammar transformation with automatic conversion to Chomsky Normal Form and Greibach Normal Form. Essential for compiler development and formal language research.</p>
+            <p className="footer-copyright">© 2024 CNF & GNF Converter. Transform with Precision.</p>
           </div>
           <div className="footer-col">
             <h4>Resources</h4>

@@ -118,6 +118,11 @@ export function grammarToGraph(grammar: Grammar, startSymbol: string) {
       continue;
     }
 
+    // Ensure rule.body exists and is not empty before creating edges
+    if (!rule.body || rule.body.length === 0) {
+      continue;
+    }
+
     const bodyStr = rule.body.map(s => s.value).join(' ');
     for (const sym of rule.body) {
       const targetId = sym.type === 'terminal' ? `t_${sym.value}` : sym.value;

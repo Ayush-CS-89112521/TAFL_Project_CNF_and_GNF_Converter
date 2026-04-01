@@ -16,7 +16,6 @@ yarn.lock
 pnpm-lock.yaml
 
 # Build artifacts
-visuals
 dist
 dist-ssr
 build

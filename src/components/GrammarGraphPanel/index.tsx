@@ -7,6 +7,7 @@ export function GrammarGraphPanel() {
   const {
     grammar,
     cnfSteps,
+    gnfSteps,
     graphViewMode,
     activeStepIndex,
     setGraphViewMode,
@@ -32,8 +33,12 @@ export function GrammarGraphPanel() {
     if (graphViewMode === 'cnf' && cnfSteps.length > 0) {
       return cnfSteps[activeStepIndex]?.after || cnfSteps[cnfSteps.length - 1]?.after || grammar;
     }
+    // BUG FIX: Always use final BACK-SUB step for GNF, not activeStepIndex (was showing step 0 with non-terminals at start)
+    if (graphViewMode === 'gnf' && gnfSteps.length > 0) {
+      return gnfSteps[gnfSteps.length - 1]?.after || grammar;
+    }
     return grammar;
-  }, [activeStepIndex, cnfSteps, grammar, graphViewMode]);
+  }, [activeStepIndex, cnfSteps, gnfSteps, grammar, graphViewMode]);
 
   useEffect(() => {
     if (!currentGrammar) return;
@@ -154,7 +159,14 @@ export function GrammarGraphPanel() {
               onClick={() => setGraphViewMode('cnf')}
               disabled={cnfSteps.length === 0}
             >
-              CNF Mode
+              CNF Code
+            </button>
+            <button
+              className={`btn-secondary small ${graphViewMode === 'gnf' ? 'active' : ''}`}
+              onClick={() => setGraphViewMode('gnf')}
+              disabled={gnfSteps.length === 0}
+            >
+              GNF Code
             </button>
           </div>
           {graphViewMode === 'cnf' && cnfSteps.length > 0 && (
@@ -166,6 +178,17 @@ export function GrammarGraphPanel() {
               onChange={event => useGrammarStore.setState({ activeStepIndex: Number(event.target.value) })}
               className="step-slider"
               aria-label="CNF graph step"
+            />
+          )}
+          {graphViewMode === 'gnf' && gnfSteps.length > 0 && (
+            <input
+              type="range"
+              min={0}
+              max={gnfSteps.length - 1}
+              value={activeStepIndex}
+              onChange={event => useGrammarStore.setState({ activeStepIndex: Number(event.target.value) })}
+              className="step-slider"
+              aria-label="GNF graph step"
             />
           )}
         </div>

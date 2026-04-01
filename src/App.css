@@ -1380,6 +1380,7 @@ button:disabled {
 
 .export-card.gnf-card {
   border-left-color: #ffc43d;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
 }
 
 .export-card.gnf-card::before {
@@ -1578,8 +1579,8 @@ button:disabled {
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
-  background: linear-gradient(135deg, #0e0e0e 0%, #1a1a2e 100%);
-  border-bottom: 1px solid #2a2a3e;
+  background: #060e20;
+  border-bottom: none;
 }
 
 .hero-content {
@@ -2859,6 +2860,11 @@ button:disabled {
 
 /* ==================== LUMINOUS ARCHIVE LANDING PAGE ==================== */
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
 .luminous-page {
   background: #060e20;
   color: #dee5ff;
@@ -3164,7 +3170,7 @@ button:disabled {
 
 .bento-item {
   grid-column: span 1;
-  background: rgba(25, 37, 64, 0.4);
+  background: transparent;
   backdrop-filter: blur(12px);
   border: 1px solid rgba(64, 72, 93, 0.1);
   padding: 2rem;
@@ -3176,7 +3182,7 @@ button:disabled {
 
 .bento-item:hover {
   border-color: rgba(133, 173, 255, 0.3);
-  background: rgba(25, 37, 64, 0.6);
+  background: transparent;
 }
 
 .bento-span-2 {
@@ -3273,7 +3279,7 @@ button:disabled {
 }
 
 .cnf-content {
-  background: #0f1930;
+  background: transparent;
   padding: 3rem;
   border-radius: 1.875rem;
 }
@@ -3319,6 +3325,62 @@ button:disabled {
 .rule-desc {
   font-size: 0.875rem;
   color: #a3aac4;
+}
+
+.cnf-benefits {
+  margin-top: 2rem;
+}
+
+.cnf-benefits h4 {
+  font-size: 1rem;
+  color: #dee5ff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.cnf-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cnf-list li {
+  font-size: 0.9rem;
+  color: #a3aac4;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.5;
+}
+
+.cnf-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #69f6b8;
+  font-weight: bold;
+}
+
+.cnf-transform {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(25, 37, 64, 0.3);
+  border-radius: 0.75rem;
+  border-left: 3px solid #85adff;
+}
+
+.cnf-transform h4 {
+  font-size: 1rem;
+  color: #dee5ff;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.cnf-small-text {
+  font-size: 0.9rem;
+  color: #a3aac4;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .cnf-diagram {
