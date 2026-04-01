@@ -22,8 +22,9 @@
   align-items: center;
   padding: 0 24px;
   gap: 18px;
-  background: rgba(10, 10, 10, 0.95);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent), rgba(14, 14, 14, 0.75);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: fixed;
   top: 0;
   left: 0;
