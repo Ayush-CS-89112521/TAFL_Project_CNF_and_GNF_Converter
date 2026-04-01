@@ -1,7 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Zap, Sparkles, Code2, Network, Play, Grid3x3 } from 'lucide-react';
 
 const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -22,227 +22,278 @@ const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; dela
 export function Home() {
   const navigate = useNavigate();
 
-  const projectPhotos = [
-    { id: 1, title: 'Grammar Input', description: 'Define your context-free grammar with a clean, intuitive editor. Support for BNF notation and custom syntax.' },
-    { id: 2, title: 'Step-by-Step Analysis', description: 'Follow each transformation step with detailed rule tracking. See exactly how your grammar evolves through each pipeline stage.' },
-    { id: 3, title: 'Visual Graph Representation', description: 'See production relationships visualized in real-time. Understand dependencies between non-terminals at a glance.' },
-    { id: 4, title: 'Final Normalized Output', description: 'Get your grammar in CNF or GNF form immediately. Verify correctness with validation engine.' },
-    { id: 5, title: 'Multi-Format Export', description: 'Download your results in JSON, YAML, or PDF format. Share transformations with teams and colleagues.' },
-    { id: 6, title: 'Transformation History', description: 'Retrieve and restore previous transformations anytime. Permanent archive of all your grammar conversions.' },
-  ];
-
   return (
-    <section className="landing-page">
-      {/* Hero Section */}
-      <div className="landing-hero">
-        <motion.div
-          className="hero-content-wrapper"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.p className="hero-tag" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            ⚡ FORMAL LANGUAGE PROCESSING SUITE
-          </motion.p>
-
-          <h1 className="landing-hero-title">
-            Transform Grammars
-            <br />
-            with <span className="highlight">Precision and Clarity</span>.
-          </h1>
-
-          <p className="landing-hero-subtitle">
-            A professional environment for formal language analysis. Convert context-free grammars to Chomsky Normal Form
-            and Greibach Normal Form with visual feedback, step-by-step analysis, and comprehensive documentation.
-          </p>
-
-          <div className="hero-actions">
-            <motion.button
-              className="btn-hero-primary"
-              onClick={() => navigate('/tool')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Start Converting
-            </motion.button>
-            <motion.button
-              className="btn-hero-secondary"
-              onClick={() => navigate('/tool?view=history')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              View History
-            </motion.button>
+    <div className="luminous-page">
+      {/* Navigation Bar */}
+      <nav className="luminous-nav">
+        <div className="nav-container">
+          <div className="nav-logo">
+            <span className="logo-text">Luminous Archive</span>
           </div>
-        </motion.div>
-      </div>
-
-      {/* Project Showcase Section */}
-      <div className="showcase-section">
-        <ScrollReveal>
-          <div className="showcase-header">
-            <h2>Project Capabilities</h2>
-            <p>Explore the features that make grammar transformation effortless and intuitive.</p>
+          <div className="nav-links">
+            <a href="#home" className="nav-link">Home</a>
+            <a href="#about" className="nav-link">About</a>
+            <a href="#transform" className="nav-link">Transform</a>
+            <a href="#archive" className="nav-link active">Archive</a>
           </div>
-        </ScrollReveal>
+          <button className="nav-cta-btn" onClick={() => navigate('/tool')}>
+            Launch Tool
+          </button>
+        </div>
+      </nav>
 
-        {projectPhotos.map((photo, idx) => (
-          <ScrollReveal key={photo.id} delay={idx * 0.08}>
-            <div className={`showcase-item ${idx % 2 === 0 ? 'image-left' : 'image-right'}`}>
-              <div className="showcase-image">
-                <div className="image-placeholder">{photo.title}</div>
+      <main className="luminous-main">
+        {/* Hero Section */}
+        <section className="hero-section">
+          <div className="hero-grid-bg"></div>
+          <div className="hero-gradient"></div>
+          
+          <ScrollReveal>
+            <div className="hero-content">
+              <div className="version-badge">
+                <Sparkles size={16} />
+                <span>Version 4.0 Archive Engine now live</span>
               </div>
-              <div className="showcase-content">
-                <h3>{photo.title}</h3>
-                <p>{photo.description}</p>
+
+              <h1 className="hero-title">
+                Transform Grammars with <span className="hero-gradient-text">Precision and Clarity.</span>
+              </h1>
+
+              <p className="hero-subtitle">
+                The professional standard for normalizing, visualizing, and analyzing complex language grammars. Engineered for clarity, built for developers.
+              </p>
+
+              <div className="hero-actions">
+                <button className="btn-primary" onClick={() => navigate('/tool')}>
+                  Start Converting
+                  <ArrowRight size={18} />
+                </button>
+                <button className="btn-secondary">View Demo</button>
               </div>
             </div>
           </ScrollReveal>
-        ))}
-      </div>
 
-      {/* About CNF Section */}
-      <ScrollReveal>
-        <div className="about-section">
-          <div className="about-image-container">
-            <div className="about-image">
-              <div className="image-placeholder cnf-img">CNF Grammar Rules</div>
-            </div>
-          </div>
-          <div className="about-text-container">
-            <div className="about-content">
-              <h2>About Chomsky Normal Form (CNF)</h2>
-              <p className="about-intro">
-                Chomsky Normal Form is a standardized representation of context-free grammars where all production rules follow
-                one of two specific patterns. This form is fundamental in computational linguistics and compiler design.
-              </p>
-
-              <div className="about-definition">
-                <h3>Production Rule Patterns</h3>
-                <ul>
-                  <li><CheckCircle2 size={20} /> <strong>A → BC</strong> - Two non-terminals on the right side</li>
-                  <li><CheckCircle2 size={20} /> <strong>A → a</strong> - A single terminal on the right side</li>
-                  <li><CheckCircle2 size={20} /> <strong>S → ε</strong> - Epsilon only for the start symbol (optional)</li>
-                </ul>
-              </div>
-
-              <p className="about-text">
-                This restricted form is essential for implementing efficient parsing algorithms like the CYK (Cocke-Younger-Kasami)
-                algorithm, which runs in O(n³) time. CNF enables polynomial-time membership testing and makes theoretical analysis
-                of grammars more tractable for automata theory applications.
-              </p>
-
-              <div className="about-example">
-                <p className="example-label">Conversion Example:</p>
-                <pre>{`Original Grammar:
-  S → aAb | ε
-  A → Sb | a
-
-CNF Equivalent:
-  S → AX | AB | B
-  X → BB
-  A → SB | a
-  B → b`}</pre>
+          {/* Hero Image Placeholder */}
+          <ScrollReveal delay={0.2}>
+            <div className="hero-image-container">
+              <div className="hero-image-placeholder">
+                <Code2 size={48} />
+                <p>Code Editor Interface</p>
               </div>
             </div>
-          </div>
-        </div>
-      </ScrollReveal>
+          </ScrollReveal>
+        </section>
 
-      {/* About GNF Section */}
-      <ScrollReveal>
-        <div className="about-section reverse">
-          <div className="about-image-container">
-            <div className="about-image">
-              <div className="image-placeholder gnf-img">GNF Parsing Structure</div>
+        {/* Project Capabilities - Bento Grid */}
+        <section className="bento-section">
+          <ScrollReveal>
+            <div className="bento-header">
+              <h2>Precision Infrastructure</h2>
+              <p>Deep-dive into our modular pipeline designed to handle the most rigorous linguistic requirements.</p>
             </div>
-          </div>
-          <div className="about-text-container">
-            <div className="about-content">
-              <h2>About Greibach Normal Form (GNF)</h2>
-              <p className="about-intro">
-                Greibach Normal Form is a more restrictive normal form where every non-epsilon production rule begins with
-                exactly one terminal symbol. This property enables direct top-down parsing without backtracking or left recursion.
-              </p>
+          </ScrollReveal>
 
-              <div className="about-definition">
-                <h3>Production Rule Pattern</h3>
-                <ul>
-                  <li><CheckCircle2 size={20} /> <strong>A → aα</strong> - Terminal first, followed by non-terminals (zero or more)</li>
-                  <li><CheckCircle2 size={20} /> <strong>No left recursion</strong> - Grammar is inherently non-left-recursive</li>
-                  <li><CheckCircle2 size={20} /> <strong>Deterministic parsing</strong> - PDA can parse without lookahead conflicts</li>
-                </ul>
+          <div className="bento-grid">
+            {/* Grammar Input */}
+            <ScrollReveal delay={0.1}>
+              <div className="bento-item bento-span-2">
+                <div className="bento-label">01 / INPUT</div>
+                <h3>Grammar Input</h3>
+                <p>Direct ingestion of CFGs, EBNF, and custom grammar formats with real-time linting.</p>
+                <div className="bento-image-placeholder">
+                  <Grid3x3 size={40} />
+                  <span>Grammar Input Interface</span>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Visual Graph */}
+            <ScrollReveal delay={0.15}>
+              <div className="bento-item">
+                <div className="bento-label">02 / VISUALIZE</div>
+                <h3>Visual Graph</h3>
+                <p>Interactive state-machine mapping of your language rules.</p>
+                <div className="bento-image-placeholder">
+                  <Network size={40} />
+                  <span>Graph View</span>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Step-by-Step Analysis */}
+            <ScrollReveal delay={0.2}>
+              <div className="bento-item">
+                <div className="bento-label">03 / ANALYSIS</div>
+                <h3>Step Analysis</h3>
+                <p>Trace the normalization process through every transformation stage.</p>
+                <div className="bento-image-placeholder">
+                  <Play size={40} />
+                  <span>Step View</span>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Final Output */}
+            <ScrollReveal delay={0.25}>
+              <div className="bento-item bento-span-2">
+                <div className="bento-label">04 / EXPORT</div>
+                <h3>Final Normalized Output</h3>
+                <p>Production-ready grammars optimized for LLVM or custom parser generators.</p>
+                <div className="bento-image-placeholder">
+                  <Grid3x3 size={40} />
+                  <span>Output Format</span>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* CNF Section */}
+        <section className="cnf-section">
+          <ScrollReveal>
+            <div className="cnf-grid">
+              {/* CNF Content */}
+              <div className="cnf-content">
+                <h2>Chomsky Normal Form <span className="cnf-highlight">(CNF)</span></h2>
+                <p className="cnf-intro">
+                  A Context-Free Grammar is in CNF if all its production rules are of the form A → BC or A → a. This binary branching structure is fundamental for the CYK parsing algorithm.
+                </p>
+
+                <div className="cnf-rules">
+                  <div className="rule-box">
+                    <div className="rule-notation">A → BC</div>
+                    <div className="rule-desc">Non-terminal transition</div>
+                  </div>
+                  <div className="rule-box">
+                    <div className="rule-notation">A → a</div>
+                    <div className="rule-desc">Terminal transition</div>
+                  </div>
+                </div>
               </div>
 
-              <p className="about-text">
-                GNF is particularly useful for LL(1) parsing and recursive descent parsers. Every derivation in GNF consumes
-                at least one terminal per production step, making it ideal for scanning-based approaches and eliminating
-                backtracking issues in top-down parsing strategies.
-              </p>
-
-              <div className="about-example">
-                <p className="example-label">Conversion Example:</p>
-                <pre>{`Original Grammar:
-  S → SaB | bA | a
-  A → Sb | a
-
-GNF Equivalent:
-  S → bAaB | aB | a
-  A → bAaaB | aaB`}</pre>
+              {/* CYK Grid Diagram */}
+              <div className="cnf-diagram">
+                <h3>CYK Parsing Grid</h3>
+                <div className="cyk-grid">
+                  <div className="grid-cell primary">S</div>
+                  <div className="grid-cell"></div>
+                  <div className="grid-cell"></div>
+                  <div className="grid-cell"></div>
+                  
+                  <div className="grid-cell muted">A</div>
+                  <div className="grid-cell primary">B</div>
+                  <div className="grid-cell"></div>
+                  <div className="grid-cell"></div>
+                  
+                  <div className="grid-cell muted">C</div>
+                  <div className="grid-cell muted">D</div>
+                  <div className="grid-cell primary">A</div>
+                  <div className="grid-cell"></div>
+                  
+                  <div className="grid-cell secondary">a</div>
+                  <div className="grid-cell secondary">b</div>
+                  <div className="grid-cell secondary">a</div>
+                  <div className="grid-cell secondary">a</div>
+                </div>
+                <p className="grid-desc">Dynamic Programming matrix for O(n³) string recognition.</p>
               </div>
             </div>
-          </div>
-        </div>
-      </ScrollReveal>
+          </ScrollReveal>
 
-      {/* Center Box - Call to Action */}
-      <ScrollReveal>
-        <div className="center-box-wrapper">
-          <div className="center-box">
-            <h2>Ready to Transform?</h2>
-            <p>Convert your context-free grammars to CNF or GNF with visual analysis and instant results.</p>
-            <motion.button
-              className="btn-center-primary"
-              onClick={() => navigate('/tool')}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Open Converter
-              <ArrowRight size={18} />
-            </motion.button>
-          </div>
-        </div>
-      </ScrollReveal>
+          {/* Code Block */}
+          <ScrollReveal delay={0.2}>
+            <div className="code-block">
+              <div className="code-header">
+                <div className="code-dots">
+                  <span className="dot red"></span>
+                  <span className="dot yellow"></span>
+                  <span className="dot green"></span>
+                </div>
+                <span className="code-filename">transformation.py</span>
+              </div>
+              <pre><code>{`# Convert CFG to Chomsky Normal Form
+def to_cnf(grammar):
+    grammar = remove_epsilon(grammar)
+    grammar = remove_unit_productions(grammar)
+    
+    for rule in grammar.rules:
+        if len(rule.body) > 2:
+            # Binary split long productions
+            grammar.split_production(rule)
+        elif is_mixed(rule.body):
+            # Encapsulate terminals
+            grammar.isolate_terminals(rule)
+            
+    return grammar`}</code></pre>
+            </div>
+          </ScrollReveal>
+        </section>
+
+        {/* GNF Section */}
+        <section className="gnf-section">
+          <ScrollReveal>
+            <div className="gnf-grid">
+              {/* GNF Info Cards */}
+              <div className="gnf-cards">
+                <div className="gnf-card">
+                  <Zap size={32} className="gnf-icon" />
+                  <h3>Deterministic Parsing</h3>
+                  <p>GNF ensures that every step of derivation consumes exactly one terminal. This property allows for a more direct mapping to Pushdown Automata (PDA) and avoids left-recursion issues.</p>
+                </div>
+                <div className="gnf-card">
+                  <Code2 size={32} className="gnf-icon-primary" />
+                  <h3>Formal Constraint</h3>
+                  <div className="constraint-box">
+                    <code>A → aα</code>
+                    <small>where a ∈ Σ and α ∈ V*</small>
+                  </div>
+                </div>
+              </div>
+
+              {/* GNF Content */}
+              <div className="gnf-content">
+                <span className="gnf-section-label">SECTION 02</span>
+                <h2>Greibach Normal <span className="gnf-highlight">Form</span></h2>
+                <p>
+                  Named after Sheila Greibach, this form is pivotal in the construction of LL(1) parsers. Every derivation leads with a terminal, essentially creating a 'lookahead' window that eliminates the ambiguity found in deeper nested non-terminal structures.
+                </p>
+                <div className="gnf-image-placeholder">
+                  <Network size={48} />
+                  <p>Server/Computing Infrastructure</p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </section>
+      </main>
 
       {/* Footer */}
-      <footer className="landing-footer">
-        <div className="footer-wrapper">
-          <div className="footer-section">
-            <h3>Grammar Archivist</h3>
-            <p>Professional CNF and GNF conversion with visual step-by-step analysis and archival storage.</p>
+      <footer className="luminous-footer">
+        <div className="footer-content">
+          <div className="footer-col">
+            <h3>Luminous Archive</h3>
+            <p>High-precision developer tools for formal language theory and syntactic transformation. Engineered for clarity and performance.</p>
+            <p className="footer-copyright">© 2024 Luminous Archive. Engineered for Precision.</p>
           </div>
-          <div className="footer-section">
-            <h3>Key Features</h3>
+          <div className="footer-col">
+            <h4>Resources</h4>
             <ul>
-              <li>Step-by-step transformation visualization</li>
-              <li>Dependency graph rendering</li>
-              <li>Multi-format export (JSON, YAML, PDF)</li>
-              <li>Permanent transformation history</li>
+              <li><a href="#docs">Documentation</a></li>
+              <li><a href="#api">API Reference</a></li>
+              <li><a href="#changelog">Changelog</a></li>
+              <li><a href="#community">Community</a></li>
             </ul>
           </div>
-          <div className="footer-section">
-            <h3>Quick Access</h3>
+          <div className="footer-col">
+            <h4>Legal</h4>
             <ul>
-              <li><button onClick={() => navigate('/tool')} className="footer-link">Open Converter</button></li>
-              <li><button onClick={() => navigate('/tool?view=history')} className="footer-link">View History</button></li>
-              <li><button onClick={() => navigate('/home')} className="footer-link">Home</button></li>
+              <li><a href="#status">Status</a></li>
+              <li><a href="#privacy">Privacy Policy</a></li>
+              <li><a href="#terms">Terms of Service</a></li>
             </ul>
           </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; 2026 Grammar Archivist. All rights reserved.</p>
         </div>
       </footer>
-    </section>
+    </div>
   );
 }
