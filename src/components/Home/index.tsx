@@ -5,14 +5,14 @@ import { ArrowRight, Code2, Network, Clock, CheckCircle2, Download } from 'lucid
 
 const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.2, margin: '0px 0px -100px 0px' });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, delay }}
+      initial={{ opacity: 0, y: 100, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.95 }}
+      transition={{ duration: 0.8, delay, type: 'spring', stiffness: 100, damping: 25 }}
     >
       {children}
     </motion.div>
@@ -296,7 +296,14 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
           </p>
 
           <div className="features-grid">
-            <motion.div className="feature-card" whileHover={{ y: -8 }}>
+            <motion.div 
+              className="feature-card" 
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0 }}
+              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+            >
               <div className="feature-icon">
                 <Code2 size={32} />
               </div>
@@ -305,7 +312,14 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
                 forms.</p>
             </motion.div>
 
-            <motion.div className="feature-card" whileHover={{ y: -8 }}>
+            <motion.div 
+              className="feature-card" 
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+            >
               <div className="feature-icon">
                 <Network size={32} />
               </div>
@@ -313,7 +327,14 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
               <p>Visualize non-terminal dependency graphs, tree structures, and production relationships at a glance.</p>
             </motion.div>
 
-            <motion.div className="feature-card" whileHover={{ y: -8 }}>
+            <motion.div 
+              className="feature-card" 
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+            >
               <div className="feature-icon">
                 <Clock size={32} />
               </div>
@@ -321,7 +342,14 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
               <p>Retrieve previously processed grammars with full state preservation and automatic revision tracking.</p>
             </motion.div>
 
-            <motion.div className="feature-card" whileHover={{ y: -8 }}>
+            <motion.div 
+              className="feature-card" 
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+            >
               <div className="feature-icon">
                 <CheckCircle2 size={32} />
               </div>
@@ -329,7 +357,14 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
               <p>Identify unreachable productions, useless symbols, and infinite loops before transformation.</p>
             </motion.div>
 
-            <motion.div className="feature-card" whileHover={{ y: -8 }}>
+            <motion.div 
+              className="feature-card" 
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+            >
               <div className="feature-icon">
                 <Download size={32} />
               </div>
@@ -337,7 +372,14 @@ S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
               <p>Export normalized grammars in multiple production environments with guaranteed parser compatibility.</p>
             </motion.div>
 
-            <motion.div className="feature-card" whileHover={{ y: -8 }}>
+            <motion.div 
+              className="feature-card" 
+              whileHover={{ y: -8 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+            >
               <div className="feature-icon">
                 <ArrowRight size={32} />
               </div>
