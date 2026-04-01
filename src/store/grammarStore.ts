@@ -116,7 +116,7 @@ export const useGrammarStore = create<GrammarState>()(
       gnfDone: false,
       highlightedRuleId: null,
       highlightedNode: null,
-      screen: 'workspace',
+      screen: 'home',
 
       sidebarCollapsed: false,
 
