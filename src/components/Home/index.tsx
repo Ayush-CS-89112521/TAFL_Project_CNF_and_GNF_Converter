@@ -93,6 +93,202 @@ D → dD | d
         </div>
       </ScrollReveal>
 
+      {/* Understanding CNF Section */}
+      <ScrollReveal>
+        <div className="edu-section cnf-section-edu">
+          <div className="edu-container">
+            <div className="edu-content">
+              <h2>Understanding Chomsky Normal Form (CNF)</h2>
+              <p className="edu-intro">
+                A context-free grammar is in Chomsky Normal Form if all its production rules follow a strict pattern. This simplified form is essential for efficient parsing and algorithm implementation.
+              </p>
+              
+              <div className="edu-definition">
+                <h3>Core Definition</h3>
+                <div className="def-list">
+                  <div className="def-item">
+                    <CheckCircle2 size={20} />
+                    <div>
+                      <strong>A → BC</strong> (Two non-terminals)
+                    </div>
+                  </div>
+                  <div className="def-item">
+                    <CheckCircle2 size={20} />
+                    <div>
+                      <strong>A → a</strong> (Single terminal)
+                    </div>
+                  </div>
+                  <div className="def-item">
+                    <CheckCircle2 size={20} />
+                    <div>
+                      <strong>S → ε</strong> (Only if S is the start symbol)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="edu-code-block">
+                <p className="code-label">Sample CNF Transformation:</p>
+                <pre>{`// Original Grammar
+S → abS | CD | ε
+A → aA | a
+B → bB | b
+
+// Transformed to CNF
+S → AX | CD | ε
+X → BX | B
+A → aA | a
+B → bB | b`}</pre>
+              </div>
+            </div>
+
+            <div className="edu-visual">
+              <div className="visualization-box">
+                <div className="viz-placeholder">
+                  <div className="viz-grid">
+                    <div className="viz-node">S</div>
+                    <div className="viz-arrow">→</div>
+                    <div className="viz-node">AB</div>
+                  </div>
+                  <div className="viz-grid">
+                    <div className="viz-node">A</div>
+                    <div className="viz-arrow">→</div>
+                    <div className="viz-node">a</div>
+                  </div>
+                  <div className="viz-grid">
+                    <div className="viz-node">B</div>
+                    <div className="viz-arrow">→</div>
+                    <div className="viz-node">b</div>
+                  </div>
+                </div>
+                <p className="viz-caption">CNF converts production rules to binary form, enabling efficient parsing algorithms (CYK, Earley).</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="conversion-steps">
+            <h3>Conversion Pipeline Steps</h3>
+            <div className="steps-grid">
+              <div className="step-card">
+                <div className="step-icon">1</div>
+                <h4>Epsilon Removal</h4>
+                <p>Eliminate ε productions systematically, maintaining grammar equivalence.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">2</div>
+                <h4>Unit Elimination</h4>
+                <p>Remove unit productions (A → B) to simplify the grammar structure.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">3</div>
+                <h4>Terminal Replacement</h4>
+                <p>Isolate terminals in separate productions for binary compliance.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">4</div>
+                <h4>Binarization</h4>
+                <p>Convert all productions to at most two symbols on the right-hand side.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      {/* Exploring GNF Section */}
+      <ScrollReveal>
+        <div className="edu-section gnf-section-edu">
+          <div className="edu-container reverse">
+            <div className="edu-visual">
+              <div className="visualization-box gnf-viz">
+                <div className="viz-placeholder gnf-concept">
+                  <h4>GNF Structure</h4>
+                  <div className="gnf-rule">
+                    <div className="term">a</div>
+                    <div className="arrow">→</div>
+                    <div className="nonterms">XYZ...</div>
+                  </div>
+                  <p className="viz-caption small">Every production begins with a terminal, followed by zero or more non-terminals. This ensures top-down parsing compatibility.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="edu-content">
+              <h2>Exploring Greibach Normal Form (GNF)</h2>
+              <p className="edu-intro">
+                Greibach Normal Form is a stricter normal form where every non-epsilon production rule begins with exactly one terminal symbol. This enables direct top-down parsing without backtracking.
+              </p>
+
+              <div className="edu-definition">
+                <h3>Form Definition</h3>
+                <p>A → a α where:</p>
+                <div className="def-list">
+                  <div className="def-item">
+                    <CheckCircle2 size={20} />
+                    <div>
+                      <strong>a</strong> is a terminal symbol
+                    </div>
+                  </div>
+                  <div className="def-item">
+                    <CheckCircle2 size={20} />
+                    <div>
+                      <strong>α</strong> is a string of zero or more non-terminals
+                    </div>
+                  </div>
+                  <div className="def-item">
+                    <CheckCircle2 size={20} />
+                    <div>
+                      <strong>No left recursion</strong> allowed
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="edu-code-block">
+                <p className="code-label">GNF Transformation Example:</p>
+                <pre>{`// Before GNF
+S → aA | a
+A → bB | b
+B → cC | c
+
+// After GNF
+S → aA | a
+A → bB | b
+B → cC | c
+
+// Deterministic Parsing Path
+S → a[A] → [A] → b[B] → [B] → c[C] → [C]`}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div className="conversion-steps gnf-steps">
+            <h3>GNF Conversion Process</h3>
+            <div className="steps-grid">
+              <div className="step-card">
+                <div className="step-icon">1</div>
+                <h4>Left Recursion Elimination</h4>
+                <p>Remove circular dependencies preventing top-down parsing.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">2</div>
+                <h4>Variable Ordering</h4>
+                <p>Systematically order non-terminals for substitution.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">3</div>
+                <h4>Production Substitution</h4>
+                <p>Substitute variables to move terminals to the front.</p>
+              </div>
+              <div className="step-card">
+                <div className="step-icon">4</div>
+                <h4>Terminal-First Form</h4>
+                <p>Ensure all productions begin with terminals.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
       {/* Mathematical Harmony Section */}
       <ScrollReveal>
         <div className="harmony-section">
