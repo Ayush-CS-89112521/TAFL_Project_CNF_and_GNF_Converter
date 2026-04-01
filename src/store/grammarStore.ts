@@ -16,7 +16,7 @@ export type AppScreen =
   | 'table'
   | 'graph'
   | 'cnf-final'
-  | 'gnf-order'
+  | 'gnf-steps'
   | 'gnf-compare'
   | 'gnf-graph'
   | 'exports'
@@ -185,7 +185,7 @@ export const useGrammarStore = create<GrammarState>()(
             state.activeMode = 'gnf';
             state.activeStepIndex = 0;
             state.isConverting = false;
-            state.screen = 'gnf-order';
+            state.screen = 'gnf-steps';
           });
           get().saveHistory('GNF Conversion');
         } catch (e) {

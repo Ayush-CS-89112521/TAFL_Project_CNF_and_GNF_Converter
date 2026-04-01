@@ -5,7 +5,6 @@ import {
   Download,
   FileStack,
   FolderArchive,
-  GitFork,
   Grid3x3,
   History,
   LayoutDashboard,
@@ -52,7 +51,7 @@ const navSections: NavSection[] = [
   {
     label: 'GNF Pipeline',
     items: [
-      { id: 'gnf-order', label: 'Variable Ordering', icon: GitFork },
+      { id: 'gnf-steps', label: 'Step Analysis', icon: FileStack },
       { id: 'gnf-compare', label: 'Transformation', icon: ArrowRight },
       { id: 'gnf-graph', label: 'GNF Graph', icon: Network },
     ]
@@ -305,10 +304,11 @@ function App() {
     }
 
     if (screen === 'steps') {
+      // CNF Step Analysis - show ONLY CNF steps
       const step = currentStep;
-      const steps = activeMode === 'gnf' ? gnfSteps : cnfSteps;
+      const steps = cnfSteps; // Force CNF steps only
       if (!step || steps.length === 0) {
-        return <div className="empty-card">No step data. Run a conversion first.</div>;
+        return <div className="empty-card">Run CNF conversion to see transformation steps.</div>;
       }
 
       const beforeCount = step.before.productions.length;
@@ -323,7 +323,7 @@ function App() {
               <button
                 key={`${item.name}-${idx}`}
                 className={`stage-node ${idx === activeStepIndex ? 'active' : ''}`}
-                onClick={() => (activeMode === 'gnf' ? setGnfStep(idx) : setCnfStep(idx))}
+                onClick={() => setCnfStep(idx)}
               >
                 <span className="dot" />
                 <span>{STEP_LABELS[item.name].short}</span>
@@ -350,7 +350,7 @@ function App() {
               <div className="panel-actions">
                 <button
                   className="btn-secondary"
-                  onClick={() => (activeMode === 'gnf' ? setGnfStep(Math.max(0, activeStepIndex - 1)) : setCnfStep(Math.max(0, activeStepIndex - 1)))}
+                  onClick={() => setCnfStep(Math.max(0, activeStepIndex - 1))}
                   disabled={activeStepIndex === 0}
                 >
                   <ArrowLeft size={14} />
@@ -358,11 +358,7 @@ function App() {
                 </button>
                 <button
                   className="btn-primary"
-                  onClick={() => (
-                    activeMode === 'gnf'
-                      ? setGnfStep(Math.min(gnfSteps.length - 1, activeStepIndex + 1))
-                      : setCnfStep(Math.min(cnfSteps.length - 1, activeStepIndex + 1))
-                  )}
+                  onClick={() => setCnfStep(Math.min(cnfSteps.length - 1, activeStepIndex + 1))}
                   disabled={activeStepIndex >= steps.length - 1}
                 >
                   Next Step
@@ -458,40 +454,78 @@ function App() {
       );
     }
 
-    if (screen === 'gnf-order') {
-      if (!gnfDone || gnfSteps.length === 0) {
-        return <div className="empty-card">Run GNF conversion to view variable ordering.</div>;
+    if (screen === 'gnf-steps') {
+      // GNF Step Analysis - show ALL GNF steps
+      const step = currentStep;
+      const steps = gnfSteps; // Force GNF steps only
+      if (!step || steps.length === 0) {
+        return <div className="empty-card">Run GNF conversion to see transformation steps.</div>;
       }
 
-      const orderStep = gnfSteps[0];
-      return (
-        <section className="screen-gnf">
-          <h1 className="hero-title">Step 1: Variable Ordering</h1>
-          <p className="hero-desc">Standardization of formal grammar requires strict ordering of non-terminals.</p>
+      const beforeCount = step.before.productions.length;
+      const afterCount = step.after.productions.length;
+      const removed = step.changes.filter(c => c.type === 'remove');
+      const added = step.changes.filter(c => c.type === 'add');
 
-          <div className="compare-grid">
-            <div className="matrix-card large">
-              <div className="matrix-head"><span>Source Grammar (CNF)</span></div>
-              <pre className="grammar-pre">{grammarToString(orderStep.before)}</pre>
-            </div>
-            <div className="matrix-card large">
-              <div className="matrix-head"><span>Indexed Output (Aᵢ)</span></div>
-              <pre className="grammar-pre">{grammarToString(orderStep.after)}</pre>
-            </div>
+      return (
+        <section className="screen-steps">
+          <div className="stage-line">
+            {steps.map((item, idx) => (
+              <button
+                key={`${item.name}-${idx}`}
+                className={`stage-node ${idx === activeStepIndex ? 'active' : ''}`}
+                onClick={() => setGnfStep(idx)}
+              >
+                <span className="dot" />
+                <span>{STEP_LABELS[item.name].short}</span>
+              </button>
+            ))}
           </div>
 
-          <div className="summary-row">
-            <div className="metric-card">
-              <p className="eyebrow">Mapped IDs</p>
-              <strong>{orderStep.after.nonTerminals.size}</strong>
+          <div className="steps-grid">
+            <div className="hero-column">
+              <h1 className="hero-title">{STEP_LABELS[step.name].long}</h1>
+              <p className="hero-desc">{step.description}</p>
+
+              <div className="metrics-pair">
+                <div>
+                  <p className="eyebrow">Before</p>
+                  <strong>{String(beforeCount).padStart(2, '0')}</strong>
+                </div>
+                <div>
+                  <p className="eyebrow">After</p>
+                  <strong className="sym-nt">{String(afterCount).padStart(2, '0')}</strong>
+                </div>
+              </div>
+
+              <div className="panel-actions">
+                <button
+                  className="btn-secondary"
+                  onClick={() => setGnfStep(Math.max(0, activeStepIndex - 1))}
+                  disabled={activeStepIndex === 0}
+                >
+                  <ArrowLeft size={14} />
+                  Previous
+                </button>
+                <button
+                  className="btn-primary"
+                  onClick={() => setGnfStep(Math.min(gnfSteps.length - 1, activeStepIndex + 1))}
+                  disabled={activeStepIndex >= steps.length - 1}
+                >
+                  Next Step
+                  <ArrowRight size={14} />
+                </button>
+              </div>
             </div>
-            <div className="metric-card">
-              <p className="eyebrow">GNF Steps</p>
-              <strong>{gnfSteps.length}</strong>
-            </div>
-            <div className="metric-card">
-              <p className="eyebrow">Status</p>
-              <strong className="sym-t">Ready</strong>
+
+            <div className="matrix-card large">
+              <div className="matrix-head">
+                <span>Formal Transformation Matrix</span>
+                <span>{added.length} Added • {removed.length} Removed</span>
+              </div>
+              <div className="matrix-list">
+                {step.after.productions.slice(0, 8).map((rule, idx) => renderGrammarRow(rule, idx, true))}
+              </div>
             </div>
           </div>
         </section>
