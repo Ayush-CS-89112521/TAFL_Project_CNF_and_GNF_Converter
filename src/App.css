@@ -2862,12 +2862,15 @@ html {
 }
 
 .luminous-page {
-  background: #060e20;
+  background: linear-gradient(180deg, rgba(15, 25, 48, 0.6), #060e20), radial-gradient(circle at 10% 10%, #111820 0%, #060e20 38%);
+  background-attachment: fixed;
   color: #dee5ff;
   min-height: 100vh;
   overflow-x: hidden;
   width: 100%;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -3655,6 +3658,8 @@ html {
   background: #060e20;
   border-top: 1px solid rgba(25, 37, 64, 0.15);
   padding: 3rem 2rem;
+  margin-top: auto;
+  width: 100%;
 }
 
 .footer-content {
